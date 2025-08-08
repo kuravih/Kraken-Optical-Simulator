@@ -1,17 +1,4 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Examp Extra Shape XY Cosines"""
-
-import pkg_resources
-required = {'KrakenOS'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-
-if missing:
-    print("No instalado")
-    import sys
-    sys.path.append("../..")
-
+"""Example: Extra Shape XY Cosines"""
 
 import KrakenOS as Kos
 import numpy as np
@@ -34,7 +21,6 @@ L1a.Glass = "BK7"
 L1a.Diameter = 30.0
 
 
-
 # ______________________________________#
 
 L1c = Kos.surf()
@@ -44,6 +30,7 @@ L1c.Diameter = 30
 
 
 # ______________________________________#
+
 
 def f(x, y, E):
     r = np.sqrt((x * x) + (y * y * 0))
@@ -57,7 +44,7 @@ def f(x, y, E):
 
 # ______________________________________#
 
-coef = [10.0, 1.]
+coef = [10.0, 1.0]
 L1c.ExtraData = [f, coef]
 L1c.Res = 1
 
@@ -85,7 +72,7 @@ Rays = Kos.raykeeper(Lens)
 
 Wav = 0.45
 for i in range(-100, 100 + 1):
-    pSource = [0.0, i / 10., 0.0]
+    pSource = [0.0, i / 10.0, 0.0]
     dCos = [0.0, 0.0, 1.0]
     Lens.Trace(pSource, dCos, Wav)
     Rays.push()

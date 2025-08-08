@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 Example: Doublet Lens with Focus Optimization
 This script demonstrates how to:
@@ -13,29 +11,15 @@ Date: 10/03/2025
 """
 
 import numpy as np
-import pkg_resources
-
-# =============================================================================
-# Check if KrakenOS is installed. If not, assume that the code is run from a 
-# downloaded GitHub folder and add the relative path.
-# =============================================================================
-required = {'KrakenOS'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-
-if missing:
-    print("KrakenOS is not installed. Using local GitHub folder.")
-    import sys
-    sys.path.append("../..")  # Adjust this path if necessary
-
 import KrakenOS as Kos  # Using KrakenOS for optical simulation
+
 
 # =============================================================================
 # Helper functions for calculating the RMS spot size and its derivative.
 # =============================================================================
 def R_RMS(L, M, N, X, Y, delta_Z):
     """
-    Calculate the RMS radius (spot size) of rays on the image plane after a 
+    Calculate the RMS radius (spot size) of rays on the image plane after a
     shift in the Z direction (delta_Z).
     """
     cenX = np.mean(X)
@@ -48,15 +32,17 @@ def R_RMS(L, M, N, X, Y, delta_Z):
     R2 = (x1 * x1) + (y1 * y1)
     return np.sqrt(np.mean(R2))
 
+
 def DER_R_RMS(L, M, N, X, Y, delta_Z):
     """
-    Compute the numerical derivative of R_RMS with respect to delta_Z using 
+    Compute the numerical derivative of R_RMS with respect to delta_Z using
     a central difference method.
     """
     h = 0.001  # Small step for numerical differentiation
     f1 = R_RMS(L, M, N, X, Y, delta_Z + h)
     f2 = R_RMS(L, M, N, X, Y, delta_Z - h)
     return (f1 - f2) / (2.0 * h)
+
 
 # =============================================================================
 # Define the optical surfaces for the doublet lens system.
@@ -76,7 +62,7 @@ P_Obj.Diameter = 30.0
 
 # First Lens Surface (convex, BK7)
 L1a = Kos.surf()
-L1a.Rc = 9.284706570002484E+001
+L1a.Rc = 9.284706570002484e001
 L1a.Thickness = 6.0
 L1a.Glass = "BK7"
 L1a.Diameter = 30.0
@@ -84,15 +70,15 @@ L1a.Axicon = 0
 
 # Second Lens Surface (concave, F2)
 L1b = Kos.surf()
-L1b.Rc = -3.071608670000159E+001
+L1b.Rc = -3.071608670000159e001
 L1b.Thickness = 3.0
 L1b.Glass = "F2"
 L1b.Diameter = 30
 
 # Air gap before image plane
 L1c = Kos.surf()
-L1c.Rc = -7.819730726078505E+001
-L1c.Thickness = 9.737604742910693E+001
+L1c.Rc = -7.819730726078505e001
+L1c.Thickness = 9.737604742910693e001
 L1c.Glass = "AIR"
 L1c.Diameter = 30
 
@@ -108,7 +94,7 @@ P_Ima.Name = "Image Plane"
 # Note: The order of surfaces in list A determines the optical sequence.
 A = [P_Obj, L1a, L1b, L1c, P_Ima]
 config_1 = Kos.Setup()
-Doublet = Kos.system(A, config_1)  # 'Doublet' is the system (formerly 'Doblete')
+Doublet = Kos.system(A, config_1)  # 'Doublet' is the system (formerly 'Doublet')
 
 # =============================================================================
 # Create ray containers for storing the traced rays.
@@ -117,12 +103,12 @@ Doublet = Kos.system(A, config_1)  # 'Doublet' is the system (formerly 'Doblete'
 raysWavelength1 = Kos.raykeeper(Doublet)  # For wavelength 0.4
 raysWavelength2 = Kos.raykeeper(Doublet)  # For wavelength 0.5
 raysWavelength3 = Kos.raykeeper(Doublet)  # For wavelength 0.6
-raysTotal = Kos.raykeeper(Doublet)        # Global container
+raysTotal = Kos.raykeeper(Doublet)  # Global container
 
 # =============================================================================
 # Generate rays across a circular aperture and trace them through the system.
 # =============================================================================
-grid_resolution = 10   # Grid resolution parameter (number of steps)
+grid_resolution = 10  # Grid resolution parameter (number of steps)
 aperture_radius = 10.0  # Maximum radius of the circular aperture (mm)
 
 for j in range(-grid_resolution, grid_resolution + 1):
@@ -135,19 +121,19 @@ for j in range(-grid_resolution, grid_resolution + 1):
             angle_deg = 0.0
             pSource = [x0, y0, 0.0]
             dCos = [0.0, np.sin(np.deg2rad(angle_deg)), np.cos(np.deg2rad(angle_deg))]
-            
+
             # Trace ray at wavelength 0.4
             wavelength = 0.4
             Doublet.Trace(pSource, dCos, wavelength)
             raysWavelength1.push()
             raysTotal.push()
-            
+
             # Trace ray at wavelength 0.5
             wavelength = 0.5
             Doublet.Trace(pSource, dCos, wavelength)
             raysWavelength2.push()
             raysTotal.push()
-            
+
             # Trace ray at wavelength 0.6
             wavelength = 0.6
             Doublet.Trace(pSource, dCos, wavelength)
@@ -167,27 +153,23 @@ Kos.display2d(Doublet, raysTotal, 0)
 # =============================================================================
 X, Y, Z, L, M, N = raysTotal.pick(-1)
 
-damping = 0.5       # Damping factor to smooth the update
-tolerance = 1e-6    # Tolerance to consider convergence
+damping = 0.5  # Damping factor to smooth the update
+tolerance = 1e-6  # Tolerance to consider convergence
 max_iterations = 100
-dz = 0.001          # Initial guess for delta_Z
+dz = 0.001  # Initial guess for delta_Z
 iteration = 0
 
 while iteration < max_iterations:
     rms_value = R_RMS(L, M, N, X, Y, dz)
     rms_derivative = DER_R_RMS(L, M, N, X, Y, dz)
     new_dz = dz - damping * (rms_value / rms_derivative)
-    print("Iteration:", iteration,
-          "delta_Z:", dz,
-          "R_RMS:", rms_value,
-          "dR_RMS/dZ:", rms_derivative,
-          "new delta_Z:", new_dz)
-    
+    print("Iteration:", iteration, "delta_Z:", dz, "R_RMS:", rms_value, "dR_RMS/dZ:", rms_derivative, "new delta_Z:", new_dz)
+
     # If the change is smaller than the tolerance, we consider the algorithm converged.
     if abs(new_dz - dz) < tolerance:
         dz = new_dz
         break
-    
+
     dz = new_dz
     iteration += 1
 
@@ -220,17 +202,17 @@ for j in range(-grid_resolution, grid_resolution + 1):
             angle_deg = 0.0
             pSource = [x0, y0, 0.0]
             dCos = [0.0, np.sin(np.deg2rad(angle_deg)), np.cos(np.deg2rad(angle_deg))]
-            
+
             # Re-trace for wavelength 0.4
             wavelength = 0.4
             Doublet.Trace(pSource, dCos, wavelength)
             newRaysTotal.push()
-            
+
             # Re-trace for wavelength 0.5
             wavelength = 0.5
             Doublet.Trace(pSource, dCos, wavelength)
             newRaysTotal.push()
-            
+
             # Re-trace for wavelength 0.6
             wavelength = 0.6
             Doublet.Trace(pSource, dCos, wavelength)

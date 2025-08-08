@@ -1,22 +1,6 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Examp Axicon and Cylinder"""
+"""Example: Axicon and Cylinder"""
 
 import numpy as np
-import pkg_resources
-""" Looking for if KrakenOS is installed, if not, it assumes that
-an folder downloaded from github is run"""
-
-required = {'KrakenOS'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-
-if missing:
-    print("Not installed")
-    import sys
-    sys.path.append("../..")
-
-
 import KrakenOS as Kos
 
 # ______________________________________#
@@ -42,10 +26,10 @@ L1a.Diameter = 30.0
 # ______________________________________#
 
 L1c = Kos.surf()
-L1c.Rc = 0.
-L1c.K = -1
-L1c.Thickness = 9.737604742910693E+001
-L1c.Axicon = (-35.0)
+L1c.Rc = 0.0
+L1c.k = -1
+L1c.Thickness = 9.737604742910693e001
+L1c.Axicon = -35.0
 L1c.ShiftY = 0
 L1c.Cylinder_Rxy_Ratio = 0
 L1c.Glass = "AIR"
@@ -66,8 +50,8 @@ A = [P_Obj, L1a, L1c, P_Ima]
 
 # ______________________________________#
 
-Doblete = Kos.system(A, configuracion_1)
-Rayos = Kos.raykeeper(Doblete)
+Doublet = Kos.system(A, configuracion_1)
+Rayos = Kos.raykeeper(Doublet)
 
 # ______________________________________#
 
@@ -84,15 +68,15 @@ for i in range(-tam, tam + 1):
             pSource_0 = [x_0, y_0, 0.0]
             dCos = [0.0, np.sin(np.deg2rad(tet)), np.cos(np.deg2rad(tet))]
             W = 0.4
-            Doblete.Trace(pSource_0, dCos, W)
+            Doublet.Trace(pSource_0, dCos, W)
             Rayos.push()
             W = 0.5
-            Doblete.Trace(pSource_0, dCos, W)
+            Doublet.Trace(pSource_0, dCos, W)
             Rayos.push()
             W = 0.6
-            Doblete.Trace(pSource_0, dCos, W)
+            Doublet.Trace(pSource_0, dCos, W)
             Rayos.push()
 
 # ______________________________________#
 
-Kos.display3d(Doblete, Rayos, 0)
+Kos.display3d(Doublet, Rayos, 0)

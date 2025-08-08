@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 Example: Faceted Optical Surface Using KrakenOS
 
@@ -14,33 +12,21 @@ Author: Joel H. V.
 Date:12/04/25
 """
 
-import pkg_resources
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
-
-
-# --- Dependency check: ensure KrakenOS is installed or load from local path ---
-required = {'KrakenOS'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-
-if missing:
-    print("KrakenOS not installed. Adding relative path.")
-    sys.path.append("../..")
-
 import KrakenOS as Kos
 
 # --- Define the entrance pupil surface ---
 P_Obj = Kos.surf()
-P_Obj.Rc = 0.0              # Radius of curvature (flat)
-P_Obj.Thickness = 10        # Distance to next surface (mm)
-P_Obj.Glass = "AIR"         # Medium is air
-P_Obj.Diameter = 30.0       # Diameter in mm
+P_Obj.Rc = 0.0  # Radius of curvature (flat)
+P_Obj.Thickness = 10  # Distance to next surface (mm)
+P_Obj.Glass = "AIR"  # Medium is air
+P_Obj.Diameter = 30.0  # Diameter in mm
 
 # --- Define a square aperture rotated 45 degrees ---
-radius = 15                 # Half-width of the square (mm)
-angle = 45                 # Rotation angle (degrees)
+radius = 15  # Half-width of the square (mm)
+angle = 45  # Rotation angle (degrees)
 px = [radius * np.cos(np.radians(angle + d)) for d in [0, 90, 180, 270, 0]]
 py = [radius * np.sin(np.radians(angle + d)) for d in [0, 90, 180, 270, 0]]
 
@@ -54,6 +40,7 @@ L1a.UDA = [px, py]
 
 # -----------------------------------------------------------------------------
 # Function to generate facet centers and normals for a faceted surface
+
 
 def generate_facets(n, m, deviation=0.1):
     """
@@ -69,23 +56,23 @@ def generate_facets(n, m, deviation=0.1):
     - NX, NY, NZ: Arrays (n x n) of the unit normal vector components
     """
     step = m / n
-    x = np.linspace(-m/2 + step/2, m/2 - step/2, n)
-    y = np.linspace(-m/2 + step/2, m/2 - step/2, n)
+    x = np.linspace(-m / 2 + step / 2, m / 2 - step / 2, n)
+    y = np.linspace(-m / 2 + step / 2, m / 2 - step / 2, n)
     X0, Y0 = np.meshgrid(x, y)
-
 
     ang_x = np.random.uniform(-deviation, deviation, size=(n, n))
     ang_y = np.random.uniform(-deviation, deviation, size=(n, n))
-    
 
-    NX = np.sin(ang_x)                       # x-component of normal
-    NY = np.sin(ang_y)                       # y-component of normal
-    NZ = np.sqrt(1.0 - NX**2 - NY**2)        # z-component of unit normal
+    NX = np.sin(ang_x)  # x-component of normal
+    NY = np.sin(ang_y)  # y-component of normal
+    NZ = np.sqrt(1.0 - NX**2 - NY**2)  # z-component of unit normal
 
     return X0, Y0, NX, NY, NZ
 
+
 # -----------------------------------------------------------------------------
 # Define a callable class to represent the faceted surface
+
 
 class FacetedSurface:
     def __init__(self, X0, Y0, NX, NY, NZ, m):
@@ -134,22 +121,23 @@ class FacetedSurface:
         z = -numerator / nz
         return z
 
+
 # -----------------------------------------------------------------------------
 # Create an instance of the faceted surface and assign it to a KrakenOS surface
 
-n = 10                  # Number of facets per side
-m = 30.0               # Width of the surface (mm)
+n = 10  # Number of facets per side
+m = 30.0  # Width of the surface (mm)
 X0, Y0, NX, NY, NZ = generate_facets(n, m, deviation=0.4)
 Faceted = FacetedSurface(X0, Y0, NX, NY, NZ, m)
 
 L1c = Kos.surf()
 L1c.Thickness = 300.0
 L1c.Diameter = m
-L1c.ExtraData = [Faceted, None]     # Second argument is unused
+L1c.ExtraData = [Faceted, None]  # Second argument is unused
 L1c.Glass = "AIR"
-L1c.UDA = [px, py]                   # Use the same UDA as L1a
-L1c.DerPres =0.000  # cero by default
-L1c.Res = 1 # One by default
+L1c.UDA = [px, py]  # Use the same UDA as L1a
+L1c.DerPres = 0.000  # cero by default
+L1c.Res = 1  # One by default
 
 # -----------------------------------------------------------------------------
 # Define the image plane
@@ -176,7 +164,7 @@ Wav = 0.45  # Wavelength in microns
 
 for i in range(n):
     for j in range(n):
-        pSource = [X0[i, j] , Y0[i, j] , 0.0]
+        pSource = [X0[i, j], Y0[i, j], 0.0]
         dCos = [0.0, 0.0, 1.0]
         Lens.Trace(pSource, dCos, Wav)
         Rays.push()

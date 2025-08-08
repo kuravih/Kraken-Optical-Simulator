@@ -1,41 +1,24 @@
-# !/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Examp Tel 2M Wavefront Fitting"""
+"""Example: Tel 2M Wavefront Fitting"""
 
 import os
 import sys
 import matplotlib.pyplot as plt
 import numpy as np
-import pkg_resources
-
-""" Looking for if KrakenOS is installed, if not, it assumes that
-an folder downloaded from github is run"""
-
-required = {'KrakenOS'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-
-if missing:
-    print("Not installed")
-    import sys
-    sys.path.append("../..")
-
-
 import KrakenOS as Kos
 
 # ______________________________________#
 
 currentDirectory = os.getcwd()
-sys.path.insert(1, currentDirectory + '/library')
+sys.path.insert(1, currentDirectory + "/library")
 
 # ______________________________________#
 
 P_Obj = Kos.surf()
 P_Obj.Rc = 0
-P_Obj.Thickness = 1000*0 + 3452.2
+P_Obj.Thickness = 1000 * 0 + 3452.2
 P_Obj.Glass = "AIR"
-P_Obj.Diameter = 1059. * 2.0
-P_Obj.Drawing=0
+P_Obj.Diameter = 1059.0 * 2.0
+P_Obj.Drawing = 0
 
 # ______________________________________#
 
@@ -45,7 +28,7 @@ M1.Rc = -9638.0
 M1.Thickness = -Thickness
 M1.k = -1.07731
 M1.Glass = "MIRROR"
-M1.Diameter = 1.059E+003 * 2.0
+M1.Diameter = 1.059e003 * 2.0
 M1.InDiameter = 250 * 2.0
 M1.TiltY = 0.0
 M1.TiltX = 0.0
@@ -91,10 +74,8 @@ W = 0.50169
 AperType = "EPD"
 
 """ Definimos el Diametro de la apertura del sistema"""
-AperVal = 2000.
+AperVal = 2000.0
 Pupil = Kos.PupilCalc(Telescopio, Surf, W, AperType, AperVal)
-
-
 
 
 print("Radio pupila de entrada: ")
@@ -116,11 +97,6 @@ print(Pupil.FocusAiryRadius)
 
 print("Distancia focal")
 print(Pupil.EFFL)
-
-
-
-
-
 
 
 """ Para los calculos internos de la fase del frente de onda indicamos que
@@ -172,13 +148,11 @@ print(RMS2Chief, "RMS(to chief) From fitted coefficents")
 print(RMS2Centroid, "RMS(to centroid) From fitted coefficents")
 
 
-
 COEF = Zcoef
 Focal = Pupil.EFFL
 Diameter = 2.0 * Pupil.RadPupInp
 Wave = W
-I= Kos.psf(COEF, Focal, Diameter, Wave,pixels=265, plot=1, sqr = 1)
-
+I = Kos.psf(COEF, Focal, Diameter, Wave, pixels=265, plot=1, sqr=1)
 
 
 # """Se genera un contenedor de rayos"""
@@ -230,9 +204,6 @@ I= Kos.psf(COEF, Focal, Diameter, Wave,pixels=265, plot=1, sqr = 1)
 # plt.show()
 
 
-
-
-
 # X = X - np.mean(X)
 # Y = Y - np.mean(Y)
 
@@ -249,7 +220,6 @@ I= Kos.psf(COEF, Focal, Diameter, Wave,pixels=265, plot=1, sqr = 1)
 # print("Peak 2 valley. ", np.max(ima)-np.min(ima))
 
 
-
 # """ Se grafica el interferograma """
 # Type = "interferogram"
 
@@ -264,6 +234,3 @@ I= Kos.psf(COEF, Focal, Diameter, Wave,pixels=265, plot=1, sqr = 1)
 # # print(AB.SCW_AN)
 # # print(AB.SCW_NM)
 # # print(AB.SCW_TOTAL)
-
-
-

@@ -1,23 +1,8 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Examp Diffraction Grating Reflection"""
+"""Example: Diffraction Grating Reflection"""
 
 import numpy as np
-import pkg_resources
-""" Looking for if KrakenOS is installed, if not, it assumes that
-an folder downloaded from github is run"""
-
-required = {'KrakenOS'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-
-if missing:
-    print("Not installed")
-    import sys
-    sys.path.append("../..")
-
-
 import KrakenOS as Kos
+
 # _________________________________________#
 
 P_Obj = Kos.surf()
@@ -34,7 +19,7 @@ Dif_Obj.Rc = 0.0
 Dif_Obj.Thickness = -250
 Dif_Obj.Glass = "MIRROR"
 Dif_Obj.Diameter = 30.0
-Dif_Obj.Grating_D = 1000/600
+Dif_Obj.Grating_D = 1000 / 600
 Dif_Obj.Diff_Ord = 1
 Dif_Obj.Grating_Angle = 0.0
 
@@ -56,21 +41,21 @@ configuracion_1 = Kos.Setup()
 
 # _________________________________________#
 
-Doblete = Kos.system(A, configuracion_1)
-Rayos = Kos.raykeeper(Doblete)
+Doublet = Kos.system(A, configuracion_1)
+Rayos = Kos.raykeeper(Doublet)
 
 # _________________________________________#
 
 pSource_0 = [0, 0, 0.0]
 tet = 0
 dCos = [0.0, np.sin(np.deg2rad(tet)), np.cos(np.deg2rad(tet))]
-w = np.linspace(.35, .90, 10)
+w = np.linspace(0.35, 0.90, 10)
 for W in w:
-    Doblete.Trace(pSource_0, dCos, W)
-    print(Doblete.XYZ[-1])
+    Doublet.Trace(pSource_0, dCos, W)
+    print(Doublet.XYZ[-1])
     Rayos.push()
 
 
 # ______________________________________#
 
-Kos.display3d(Doblete, Rayos, 1)
+Kos.display3d(Doublet, Rayos, 1)

@@ -1,23 +1,7 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Examp Doublet Lens 3D color"""
+"""Example: Doublet Lens 3D color"""
 
 import pickle
 import numpy as np
-import pkg_resources
-""" Looking for if KrakenOS is installed, if not, it assumes that
-an folder downloaded from github is run"""
-
-required = {'KrakenOS'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-
-if missing:
-    print("Not installed")
-    import sys
-    sys.path.append("../..")
-
-
 import KrakenOS as Kos
 
 # _________________________________________#
@@ -31,27 +15,27 @@ P_Obj.Diameter = 30.0
 # _________________________________________#
 
 L1a = Kos.surf()
-L1a.Rc = 9.284706570002484E+001
+L1a.Rc = 9.284706570002484e001
 L1a.Thickness = 6.0
 L1a.Glass = "BK7"
 L1a.Diameter = 30.0
 L1a.Axicon = 0
-L1a.Color = [.8, .7, .4]
+L1a.Color = [0.8, 0.7, 0.4]
 
 # _________________________________________#
 
 L1b = Kos.surf()
-L1b.Rc = -3.071608670000159E+001
+L1b.Rc = -3.071608670000159e001
 L1b.Thickness = 3.0
 L1b.Glass = "F2"
 L1b.Diameter = 30
-L1b.Color = [.7, .4, .4]
+L1b.Color = [0.7, 0.4, 0.4]
 
 # _________________________________________#
 
 L1c = Kos.surf()
-L1c.Rc = -7.819730726078505E+001
-L1c.Thickness = 9.737604742910693E+001
+L1c.Rc = -7.819730726078505e001
+L1c.Thickness = 9.737604742910693e001
 L1c.Glass = "AIR"
 L1c.Diameter = 30
 
@@ -70,21 +54,20 @@ A = [P_Obj, L1a, L1b, L1c, P_Ima]
 configuracion_1 = Kos.Setup()
 
 
-with open('mi_objeto.pkl', 'wb') as archivo_salida:
+with open("mi_objeto.pkl", "wb") as archivo_salida:
     # Usa pickle.dump para serializar y guardar el objeto en el archivo.
     pickle.dump(configuracion_1, archivo_salida)
 
 
-
-with open('mi_objeto.pkl', 'rb') as archivo_entrada:
+with open("mi_objeto.pkl", "rb") as archivo_entrada:
     configuracion_1 = pickle.load(archivo_entrada)
 
 # _________________________________________#
 
-Doblete = Kos.system(A, configuracion_1)
+Doublet = Kos.system(A, configuracion_1)
 
 
-Rayos = Kos.raykeeper(Doblete)
+Rayos = Kos.raykeeper(Doublet)
 
 # _________________________________________#
 
@@ -101,15 +84,15 @@ for i in range(-tam, tam + 1):
             pSource_0 = [x_0, y_0, 0.0]
             dCos = [0.0, np.sin(np.deg2rad(tet)), np.cos(np.deg2rad(tet))]
             W = 0.4
-            Doblete.Trace(pSource_0, dCos, W)
+            Doublet.Trace(pSource_0, dCos, W)
             Rayos.push()
             W = 0.5
-            Doblete.Trace(pSource_0, dCos, W)
+            Doublet.Trace(pSource_0, dCos, W)
             Rayos.push()
             W = 0.6
-            Doblete.Trace(pSource_0, dCos, W)
+            Doublet.Trace(pSource_0, dCos, W)
             Rayos.push()
 
 # _________________________________________#
 
-Kos.display3d(Doblete, Rayos, 1,BackgCol="Blue")
+Kos.display3d(Doublet, Rayos, 1, BackgCol="Blue")

@@ -1,23 +1,8 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Examp Diffraction Grating Reflection"""
+"""Example: Diffraction Grating Reflection"""
 
 import numpy as np
-import pkg_resources
-""" Looking for if KrakenOS is installed, if not, it assumes that
-an folder downloaded from github is run"""
-
-required = {'KrakenOS'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-
-if missing:
-    print("Not installed")
-    import sys
-    sys.path.append("../..")
-
-
 import KrakenOS as Kos
+
 # _________________________________________#
 
 P_Obj = Kos.surf()
@@ -29,7 +14,7 @@ P_Obj.Diameter = 30.0
 # _________________________________________#
 
 L1a = Kos.surf()
-L1a.Rc = 5.513435044607768E+001
+L1a.Rc = 5.513435044607768e001
 L1a.Thickness = 6.0
 L1a.Glass = "BK7"
 L1a.Diameter = 30.0
@@ -37,7 +22,7 @@ L1a.Diameter = 30.0
 # _________________________________________#
 
 L1b = Kos.surf()
-L1b.Rc = -4.408716526030626E+001
+L1b.Rc = -4.408716526030626e001
 L1b.Thickness = 3.0
 L1b.Glass = "F2"
 L1b.Diameter = 30
@@ -45,8 +30,8 @@ L1b.Diameter = 30
 # _________________________________________#
 
 L1c = Kos.surf()
-L1c.Rc = -2.246906271406796E+002
-L1c.Thickness = 9.737871661422000E+001 - 50.0
+L1c.Rc = -2.246906271406796e002
+L1c.Thickness = 9.737871661422000e001 - 50.0
 L1c.Glass = "AIR"
 L1c.Diameter = 30
 
@@ -79,8 +64,8 @@ configuracion_1 = Kos.Setup()
 
 # _________________________________________#
 
-Doblete = Kos.system(A, configuracion_1)
-Rayos = Kos.raykeeper(Doblete)
+Doublet = Kos.system(A, configuracion_1)
+Rayos = Kos.raykeeper(Doublet)
 
 # _________________________________________#
 
@@ -98,15 +83,15 @@ for i in range(-tam, tam + 1):
             pSource_0 = [x_0, y_0, 0.0]
             dCos = [0.0, np.sin(np.deg2rad(tet)), np.cos(np.deg2rad(tet))]
             W = 0.4
-            Doblete.Trace(pSource_0, dCos, W)
+            Doublet.Trace(pSource_0, dCos, W)
             Rayos.push()
             W = 0.5
-            Doblete.Trace(pSource_0, dCos, W)
+            Doublet.Trace(pSource_0, dCos, W)
             Rayos.push()
             W = 0.6
-            Doblete.Trace(pSource_0, dCos, W)
+            Doublet.Trace(pSource_0, dCos, W)
             Rayos.push()
 
 # ______________________________________#
 
-Kos.display3d(Doblete, Rayos, 1)
+Kos.display3d(Doublet, Rayos, 1)

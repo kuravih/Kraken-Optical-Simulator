@@ -1,6 +1,4 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Examp Solid Objects STL ARRAY"""
+"""Example: Solid Objects STL ARRAY"""
 
 """
 Using stl or vtk solid elements in non-sequential mode is not accurate,
@@ -12,17 +10,6 @@ Using stl or vtk solid elements in non-sequential mode is not accurate,
 import matplotlib.pyplot as plt
 import numpy as np
 import pyvista as pv
-import pkg_resources
-required = {'KrakenOS'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-
-if missing:
-    print("No instalado")
-    import sys
-    sys.path.append("../..")
-
-
 import KrakenOS as Kos
 
 # ______________________________________#
@@ -45,22 +32,25 @@ element0 = pv.Cube(center=(0.0, 0.0, 0.0), x_length=0.1, y_length=0.1, z_length=
 for A in range(-n, n + 1):
     for B in range(-n, n + 1):
 
-        element1 = pv.Cube(center=( 0.0, 0.0, 0.0), x_length=Lx, y_length=Ly, z_length=Lz,)
-        v = [A * Lx , B * Ly, 0]
-        Ty =  0.5 * np.rad2deg(np.arctan2(A * Lx, focal))
+        element1 = pv.Cube(
+            center=(0.0, 0.0, 0.0),
+            x_length=Lx,
+            y_length=Ly,
+            z_length=Lz,
+        )
+        v = [A * Lx, B * Ly, 0]
+        Ty = 0.5 * np.rad2deg(np.arctan2(A * Lx, focal))
         Tx = -0.5 * np.rad2deg(np.arctan2(B * Ly, focal))
 
-
         try:
-            element1.rotate_x(Tx, inplace = True)
-            element1.rotate_y(Ty, inplace = True)
-            element1.translate(v, inplace = True)
+            element1.rotate_x(Tx, inplace=True)
+            element1.rotate_y(Ty, inplace=True)
+            element1.translate(v, inplace=True)
         except:
 
             element1.rotate_x(Tx)
             element1.rotate_y(Ty)
             element1.translate(v)
-
 
         element0 = element0 + element1
 
@@ -108,8 +98,6 @@ W = 0.633
 for A in range(-n, n + 1):
     for B in range(-n, n + 1):
 
-
-
         x_0 = A * Lx
         y_0 = B * Ly
         r = np.sqrt((x_0 * x_0) + (y_0 * y_0))
@@ -119,11 +107,11 @@ for A in range(-n, n + 1):
         MirrorArray.NsTrace(pSource_0, dCos, W)
         if np.shape(MirrorArray.NAME)[0] != 0:
             if MirrorArray.NAME[-1] == "Plano imagen":
-                plt.plot(MirrorArray.Hit_x[-1], MirrorArray.Hit_y[-1], '.', c="g")
+                plt.plot(MirrorArray.Hit_x[-1], MirrorArray.Hit_y[-1], ".", c="g")
                 Rays.push()
 
 # ______________________________________#
 
-plt.axis('square')
+plt.axis("square")
 plt.show()
 Kos.display3d(MirrorArray, Rays, 0)

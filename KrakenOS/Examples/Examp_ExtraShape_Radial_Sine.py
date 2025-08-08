@@ -1,17 +1,4 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Examp Extra Shape Radial Sine"""
-
-import pkg_resources
-required = {'KrakenOS'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-
-if missing:
-    print("No instalado")
-    import sys
-    sys.path.append("../..")
-
+"""Example: Extra Shape Radial Sine"""
 
 import KrakenOS as Kos
 import numpy as np
@@ -45,6 +32,7 @@ L1c.Diameter = 30
 
 # ______________________________________#
 
+
 def f(x, y, E):
     r = np.sqrt(x * x + y * y)
     r = np.asarray(r)
@@ -57,7 +45,7 @@ def f(x, y, E):
 
 coef = np.zeros(36)
 coef[0] = 5
-coef[1] = .5
+coef[1] = 0.5
 ES = [f, coef]
 L1c.ExtraData = ES
 
@@ -84,7 +72,7 @@ Rays = Kos.raykeeper(Lens)
 
 Wav = 0.45
 for i in range(-100, 100 + 1):
-    pSource = [0.0, i / 10., 0.0]
+    pSource = [0.0, i / 10.0, 0.0]
     dCos = [0.0, 0.0, 1.0]
     Lens.Trace(pSource, dCos, Wav)
     Rays.push()

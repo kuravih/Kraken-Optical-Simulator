@@ -1,23 +1,11 @@
-# !/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Examp  TEl 2M Pupila"""
+"""Example:  TEl 2M Pupila"""
 
 import matplotlib.pyplot as plt
 import numpy as np
 
 import sys
-sys.path.insert(1, '/Users/joelherreravazquez/Documents/GitHub/Kraken-Optical-Simulator/')
 
-import pkg_resources
-required = {'KrakenOS'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-
-if missing:
-    print("No instalado")
-    import sys
-    sys.path.append("../..")
-
+sys.path.insert(1, "/Users/joelherreravazquez/Documents/GitHub/Kraken-Optical-Simulator/")
 
 import KrakenOS as Kos
 
@@ -25,29 +13,29 @@ import KrakenOS as Kos
 
 P_Obj = Kos.surf()
 P_Obj.Rc = 0
-P_Obj.Thickness = 1000 + 3.452200000000000E+003
+P_Obj.Thickness = 1000 + 3.452200000000000e003
 P_Obj.Glass = "AIR"
-P_Obj.Diameter = 1.059E+003 * 2.0
+P_Obj.Diameter = 1.059e003 * 2.0
 
 # ______________________________________#
 
-Thickness = 3.452200000000000E+003
+Thickness = 3.452200000000000e003
 M1 = Kos.surf()
-M1.Rc = -9.638000000004009E+003
+M1.Rc = -9.638000000004009e003
 M1.Thickness = -Thickness
-M1.k = -1.077310000000000E+000
+M1.k = -1.077310000000000e000
 M1.Glass = "MIRROR"
-M1.Diameter = 1.059E+003 * 2.0
+M1.Diameter = 1.059e003 * 2.0
 M1.InDiameter = 250 * 2.0
 
 # ______________________________________#
 
 M2 = Kos.surf()
-M2.Rc = -3.93E+003
-M2.Thickness = Thickness + 1.037525880125084E+003
-M2.k = -4.328100000000000E+000
+M2.Rc = -3.93e003
+M2.Thickness = Thickness + 1.037525880125084e003
+M2.k = -4.328100000000000e000
 M2.Glass = "MIRROR"
-M2.Diameter = 3.365E+002 * 2.0
+M2.Diameter = 3.365e002 * 2.0
 M2.TiltY = 0.1
 M2.TiltX = 0.1
 M2.AxisMove = 0
@@ -120,6 +108,6 @@ Kos.display2d(Telescopio, Rayos, 1, 1)
 
 X, Y, Z, L, M, N = Rayos.pick(-1)
 plt.figure(300)
-plt.plot(X, Y, 'x')
-plt.axis('square')
+plt.plot(X, Y, "x")
+plt.axis("square")
 plt.show(block=False)

@@ -1,41 +1,24 @@
-# !/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Examp Tel 2M Wavefront Fitting"""
+"""Example: Tel 2M Wavefront Fitting"""
 
 import os
 import sys
 import matplotlib.pyplot as plt
 import numpy as np
-import pkg_resources
-
-""" Looking for if KrakenOS is installed, if not, it assumes that
-an folder downloaded from github is run"""
-
-required = {'KrakenOS'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-
-if missing:
-    print("Not installed")
-    import sys
-    sys.path.append("../..")
-
-
 import KrakenOS as Kos
 
 # ______________________________________#
 
 currentDirectory = os.getcwd()
-sys.path.insert(1, currentDirectory + '/library')
+sys.path.insert(1, currentDirectory + "/library")
 
 # ______________________________________#
 
 P_Obj = Kos.surf()
 P_Obj.Rc = 0
-P_Obj.Thickness = 1000*0 + 3452.2
+P_Obj.Thickness = 1000 * 0 + 3452.2
 P_Obj.Glass = "AIR"
-P_Obj.Diameter = 1059. * 2.0
-P_Obj.Drawing=0
+P_Obj.Diameter = 1059.0 * 2.0
+P_Obj.Drawing = 0
 
 # ______________________________________#
 
@@ -45,14 +28,14 @@ M1.Rc = -9638.0
 M1.Thickness = -Thickness
 M1.k = -1.07731
 M1.Glass = "MIRROR"
-M1.Diameter = 1.059E+003 * 2.0
-#M1.InDiameter = 250 * 2.0
+M1.Diameter = 1.059e003 * 2.0
+# M1.InDiameter = 250 * 2.0
 
 # ______________________________________#
 
 M2 = Kos.surf()
 M2.Rc = -3930.0
-M2.Thickness = 4489.731761 -1.107e-9 # Thickness + 1037.525880
+M2.Thickness = 4489.731761 - 1.107e-9  # Thickness + 1037.525880
 M2.k = -4.3281
 M2.Glass = "MIRROR"
 M2.Diameter = 336.5 * 2.0
@@ -82,14 +65,14 @@ Colim.Diameter = 400
 ############################
 N2 = Kos.surf()
 N2.Glass = "NULL"
-N2.DespY =125.9836755
-N2.TiltX =3.181E-15
+N2.DespY = 125.9836755
+N2.TiltX = 3.181e-15
 N2.AxisMove = 1
 ############################
 
 N3 = Kos.surf()
 N3.Glass = "NULL"
-N3.TiltX =-71
+N3.TiltX = -71
 N3.AxisMove = 1
 
 #############################
@@ -97,10 +80,10 @@ N3.AxisMove = 1
 G1 = Kos.surf()
 G1.Glass = "MIRROR"
 G1.Diameter = 300
-G1.Grating_D = (1/0.079)
+G1.Grating_D = 1 / 0.079
 G1.Diff_Ord = -41
-G1.Grating_Angle = 0.
-G1.AxisMove=1
+G1.Grating_Angle = 0.0
+G1.AxisMove = 1
 #############################
 
 N4 = Kos.surf()
@@ -146,10 +129,10 @@ G2 = Kos.surf()
 G2.Thickness = -100
 G2.Glass = "MIRROR"
 G2.Diameter = 300
-G2.Grating_D =1/0.3
+G2.Grating_D = 1 / 0.3
 G2.Diff_Ord = 1
 G2.Grating_Angle = 0
-G2.SubAperture = [1.0,0,0]
+G2.SubAperture = [1.0, 0, 0]
 
 #############################
 
@@ -174,10 +157,10 @@ Asp1.Diameter = 100
 Asp1.Rc = -14925.373
 Asp1.Thickness = -10
 
-ED1=np.zeros(10)
-ED1[0] = 0.0    # 2nd Order
-ED1[1] = 5.1E-9  # 4nd Order
-ED1[2] = 5.1E-14 # 6nd Order
+ED1 = np.zeros(10)
+ED1[0] = 0.0  # 2nd Order
+ED1[1] = 5.1e-9  # 4nd Order
+ED1[2] = 5.1e-14  # 6nd Order
 Asp1.AspherData = ED1
 
 #############################
@@ -229,25 +212,25 @@ N13.AxisMove = 1
 
 L1a = Kos.surf()
 L1a.Glass = "F_SILICA"
-L1a.Diameter = 25.4*2
+L1a.Diameter = 25.4 * 2
 L1a.Thickness = -7
 L1a.Rc = -98.5
 
 L1b = Kos.surf()
 L1b.Glass = "AIR"
-L1b.Diameter = 25.4*2
+L1b.Diameter = 25.4 * 2
 L1b.Thickness = -8
 
 ##############################
 
 L2a = Kos.surf()
 L2a.Glass = "F_SILICA"
-L2a.Diameter = 25.4*2
+L2a.Diameter = 25.4 * 2
 L2a.Thickness = -4
 
 L2b = Kos.surf()
 L2b.Glass = "AIR"
-L2b.Diameter = 25.4*2
+L2b.Diameter = 25.4 * 2
 L2b.Thickness = -5.40475
 #############################
 
@@ -259,7 +242,7 @@ P_Ima.Name = "Plano imagen"
 
 # ______________________________________#
 
-A = [P_Obj, M1, M2, N1, Colim, N2, N3, G1,N4, N5, N6, N7, N8, G2, N9, N10, Asp1, Asp2, N11, Flat, N12, M3, N13, L1a, L1b, L2a, L2b, P_Ima]
+A = [P_Obj, M1, M2, N1, Colim, N2, N3, G1, N4, N5, N6, N7, N8, G2, N9, N10, Asp1, Asp2, N11, Flat, N12, M3, N13, L1a, L1b, L2a, L2b, P_Ima]
 configuracion_1 = Kos.Setup()
 Telescope = Kos.system(A, configuracion_1)
 
@@ -273,27 +256,26 @@ tsis = len(A) - 1
 
 # ______________________________________#
 
-a=np.loadtxt("thar_uves.dat.txt")
-n=a[:,0]
-lam=a[:,1]/10000.0
+a = np.loadtxt("KrakenOS/Examples/thar_uves.dat.txt")
+n = a[:, 0]
+lam = a[:, 1] / 10000.0
 
 
+a = np.arange(-35, -80, -1)
 
-a=np.arange(-35, -80, -1)
-
-x=[]
-y=[]
-z=[]
+x = []
+y = []
+z = []
 for aa in a:
-    Telescope.SDT[7].Diff_Ord=aa
+    Telescope.SDT[7].Diff_Ord = aa
     Telescope.SetData()
-    print("Order: ",aa)
+    print("Order: ", aa)
 
     # ______________________________________#
-    for q in range(0,len(n)):
+    for q in range(0, len(n)):
         W = lam[q]
-        i=0
-        j=0
+        i = 0
+        j = 0
         x_0 = (i / tam) * rad
         y_0 = (j / tam) * rad
         r = np.sqrt((x_0 * x_0) + (y_0 * y_0))
@@ -303,27 +285,26 @@ for aa in a:
             dCos = [0.0, np.sin(np.deg2rad(tet)), np.cos(np.deg2rad(tet))]
 
             Telescope.Trace(pSource_0, dCos, W)
-            if Telescope.SURFACE[-1] == Telescope.n-1:
+            if Telescope.SURFACE[-1] == Telescope.n - 1:
                 xyz = Telescope.OST_XYZ[-1]
                 x.append(xyz[0])
                 y.append(xyz[1])
                 z.append(xyz[2])
                 Rays.push()
 
-X=np.asarray(x)
-Y=np.asarray(y)
-Z=np.asarray(z)
+X = np.asarray(x)
+Y = np.asarray(y)
+Z = np.asarray(z)
 
 # ______________________________________#
 
 
-plt.plot(X, -Y, '|')
-plt.xlabel('X')
-plt.ylabel('Y')
-plt.title('Spot Diagram')
-plt.axis('square')
+plt.plot(X, -Y, "|")
+plt.xlabel("X")
+plt.ylabel("Y")
+plt.title("Spot Diagram")
+plt.axis("square")
 plt.show()
-
 
 
 Kos.display3d(Telescope, Rays, 0)

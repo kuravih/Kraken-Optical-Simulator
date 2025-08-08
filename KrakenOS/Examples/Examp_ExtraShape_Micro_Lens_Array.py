@@ -1,20 +1,4 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Examp Extra Shape Micro Lens Array"""
-
-import pkg_resources
-""" Looking for if KrakenOS is installed, if not, it assumes that
-an folder downloaded from github is run"""
-
-required = {'KrakenOS'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-
-if missing:
-    print("Not installed")
-    import sys
-    sys.path.append("../..")
-
+"""Example: Extra Shape Micro Lens Array"""
 
 import KrakenOS as Kos
 import numpy as np
@@ -46,6 +30,7 @@ L1c.Diameter = 30
 
 # ______________________________________#
 
+
 def f(x, y, E):
     DeltaX = E[0] * np.rint(x / E[0])
     DeltaY = E[0] * np.rint(y / E[0])
@@ -54,7 +39,7 @@ def f(x, y, E):
     s = np.sqrt((x * x) + (y * y))
     c = 1.0 / E[1]
     InRoot = 1 - (E[2] + 1.0) * c * c * s * s
-    z = (c * s * s / (1.0 + np.sqrt(InRoot)))
+    z = c * s * s / (1.0 + np.sqrt(InRoot))
     return z
 
 
@@ -87,7 +72,7 @@ Rays = Kos.raykeeper(Lens)
 
 Wav = 0.45
 for i in range(-100, 100 + 1):
-    pSource = [0.0, i / 10., 0.0]
+    pSource = [0.0, i / 10.0, 0.0]
     dCos = [0.0, 0.0, 1.0]
     Lens.Trace(pSource, dCos, Wav)
     Rays.push()

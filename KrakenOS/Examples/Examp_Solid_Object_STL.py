@@ -1,38 +1,25 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Examp Tel 2M Spyder Spot Diagram"""
+"""Example: Tel 2M Spyder Spot Diagram"""
 
 # import os
 import numpy as np
-import pkg_resources
-required = {'KrakenOS'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-
-if missing:
-    print("No instalado")
-    import sys
-    sys.path.append("../..")
-
-
 import KrakenOS as Kos
 
 # ______________________________________#
 
 P_Obj = Kos.surf()
-P_Obj.Thickness = 2.000000000000000E+003
+P_Obj.Thickness = 2.000000000000000e003
 P_Obj.Glass = "AIR"
-P_Obj.Diameter = 6.796727741707513E+002 * 2.0
+P_Obj.Diameter = 6.796727741707513e002 * 2.0
 P_Obj.Drawing = 0
 
 # ______________________________________#
 
 M1 = Kos.surf()
-M1.Rc = -6.0E+003
-M1.Thickness = -1.774190000000000E+003 + 1.853722901194000E+000
-M1.k = -1.6+000
+M1.Rc = -6.0e003
+M1.Thickness = -1.774190000000000e003 + 1.853722901194000e000
+M1.k = -1.6 + 000
 M1.Glass = "MIRROR"
-M1.Diameter = 6.63448E+002 * 2.0
+M1.Diameter = 6.63448e002 * 2.0
 M1.InDiameter = 228.6 * 2.0
 M1.DespY = 0.0
 M1.TiltX = 0.0000
@@ -41,11 +28,11 @@ M1.AxisMove = 1
 # ______________________________________#
 
 M2 = Kos.surf()
-M2.Rc = -6.00E+003
+M2.Rc = -6.00e003
 M2.Thickness = -M1.Thickness
-M2.k = -3.4782E+001
+M2.k = -3.4782e001
 M2.Glass = "MIRROR"
-M2.Diameter = 3.0E+002 * 2.0
+M2.Diameter = 3.0e002 * 2.0
 
 # ______________________________________#
 
@@ -57,7 +44,7 @@ Vertex.Drawing = 0
 
 # ______________________________________#
 
-file = r"Prisma.stl"
+file = "KrakenOS/Examples/prism.stl"
 
 # ______________________________________#
 
@@ -93,8 +80,6 @@ Telescope = Kos.system(A, configuracion_1)
 Rays = Kos.raykeeper(Telescope)
 
 
-
-
 Telescope.energy_probability = 1
 Telescope.NsLimit = 10
 
@@ -102,7 +87,7 @@ Telescope.NsLimit = 10
 
 W = 0.633
 tam = 5
-rad = 6.56727741707513E+002
+rad = 6.56727741707513e002
 tsis = len(A) + 2
 for gg in range(0, 10):
     for j in range(-tam, tam + 1):

@@ -1,19 +1,6 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Examp Parabole Mirror Shift"""
+"""Example: Parabole Mirror Shift"""
 
 import numpy as np
-import pkg_resources
-required = {'KrakenOS'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-
-if missing:
-    print("No instalado")
-    import sys
-    sys.path.append("../..")
-
-
 import KrakenOS as Kos
 
 # ______________________________________#
@@ -39,39 +26,18 @@ bb = 100
 
 radio = 150
 
-px = [radio * np.cos(np.radians(0)),
-     radio * np.cos(np.radians(72)),
-     radio * np.cos(np.radians(144)),
-     radio * np.cos(np.radians(216)),
-     radio * np.cos(np.radians(288)),
-     radio * np.cos(np.radians(0))]
+px = [radio * np.cos(np.radians(0)), radio * np.cos(np.radians(72)), radio * np.cos(np.radians(144)), radio * np.cos(np.radians(216)), radio * np.cos(np.radians(288)), radio * np.cos(np.radians(0))]
 
-py = [radio * np.sin(np.radians(0)),
-     radio * np.sin(np.radians(72)),
-     radio * np.sin(np.radians(144)),
-     radio * np.sin(np.radians(216)),
-     radio * np.sin(np.radians(288)),
-     radio * np.sin(np.radians(0))]
+py = [radio * np.sin(np.radians(0)), radio * np.sin(np.radians(72)), radio * np.sin(np.radians(144)), radio * np.sin(np.radians(216)), radio * np.sin(np.radians(288)), radio * np.sin(np.radians(0))]
 
 radio = 50
 
-px1 = [radio * np.cos(np.radians(0)),
-     radio * np.cos(np.radians(72)),
-     radio * np.cos(np.radians(144)),
-     radio * np.cos(np.radians(216)),
-     radio * np.cos(np.radians(288)),
-     radio * np.cos(np.radians(0))]
+px1 = [radio * np.cos(np.radians(0)), radio * np.cos(np.radians(72)), radio * np.cos(np.radians(144)), radio * np.cos(np.radians(216)), radio * np.cos(np.radians(288)), radio * np.cos(np.radians(0))]
 
-py1 = [radio * np.sin(np.radians(0)),
-     radio * np.sin(np.radians(72)),
-     radio * np.sin(np.radians(144)),
-     radio * np.sin(np.radians(216)),
-     radio * np.sin(np.radians(288)),
-     radio * np.sin(np.radians(0))]
+py1 = [radio * np.sin(np.radians(0)), radio * np.sin(np.radians(72)), radio * np.sin(np.radians(144)), radio * np.sin(np.radians(216)), radio * np.sin(np.radians(288)), radio * np.sin(np.radians(0))]
 
 px.extend(px1)
 py.extend(py1)
-
 
 
 M1.UDA = [px, py]
@@ -91,24 +57,23 @@ configuracion_1 = Kos.Setup()
 
 # ______________________________________#
 
-Espejo = Kos.system(A, configuracion_1, build = 1)
+Espejo = Kos.system(A, configuracion_1, build=1)
 Rayos = Kos.raykeeper(Espejo)
 
 # ______________________________________#
 
 
-
 diametro = 300
 num_puntos_lado = 30
 
-x = np.linspace(-diametro/2, diametro/2, num_puntos_lado)
-y = np.linspace(-diametro/2, diametro/2, num_puntos_lado)
+x = np.linspace(-diametro / 2, diametro / 2, num_puntos_lado)
+y = np.linspace(-diametro / 2, diametro / 2, num_puntos_lado)
 
 X, Y = np.meshgrid(x, y)
 X = X.ravel()
 Y = Y.ravel()
 
-for i in range(0,len(X)):
+for i in range(0, len(X)):
     x_0 = X[i]
     y_0 = Y[i]
     r = np.sqrt((x_0 * x_0) + (y_0 * y_0))
@@ -125,18 +90,18 @@ for i in range(0,len(X)):
 Kos.display3d(Espejo, Rayos, 0)
 
 
-
 def R_RMS_delta(Z1, L, M, N, X0, Y0):
     X1 = ((L / N) * Z1) + X0
     Y1 = ((M / N) * Z1) + Y0
     cenX = np.mean(X1)
     cenY = np.mean(Y1)
-    x1 = (X1 - cenX)
-    y1 = (Y1 - cenY)
-    R2 = ((x1 * x1) + (y1 * y1))
+    x1 = X1 - cenX
+    y1 = Y1 - cenY
+    R2 = (x1 * x1) + (y1 * y1)
     R_RMS = np.sqrt(np.mean(R2))
     return R_RMS
 
-x,y,z,l,m,n = Rayos.pick(-1, coordinates="local")
+
+x, y, z, l, m, n = Rayos.pick(-1, coordinates="local")
 
 print(R_RMS_delta(z, l, m, n, x, y))

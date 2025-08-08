@@ -1,21 +1,8 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Examp TEl 2M Spyder Spot RMS"""
+"""Example: TEl 2M Spyder Spot RMS"""
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pyvista as pv
-import pkg_resources
-required = {'KrakenOS'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-
-if missing:
-    print("No instalado")
-    import sys
-    sys.path.append("../..")
-
-
 import KrakenOS as Kos
 
 # ______________________________________#
@@ -24,15 +11,15 @@ P_Obj = Kos.surf()
 P_Obj.Rc = 0
 P_Obj.Thickness = 1000
 P_Obj.Glass = "AIR"
-P_Obj.Diameter = 1.059E+003 * 2.0
+P_Obj.Diameter = 1.059e003 * 2.0
 
 # ______________________________________#
 
 Spider = Kos.surf()
 Spider.Rc = 999999999999.0
-Spider.Thickness = 3.452229924716749E+003 + 100.0
+Spider.Thickness = 3.452229924716749e003 + 100.0
 Spider.Glass = "AIR"
-Spider.Diameter = 1.059E+003 * 2.0
+Spider.Diameter = 1.059e003 * 2.0
 
 # ______________________________________#
 
@@ -57,28 +44,28 @@ Spider.TiltZ = 0
 
 # ______________________________________#
 
-Thickness = 3.452200000000000E+003
+Thickness = 3.452200000000000e003
 M1 = Kos.surf()
-M1.Rc = -9.638000000004009E+003
+M1.Rc = -9.638000000004009e003
 M1.Thickness = -Thickness
-M1.k = -1.077310000000000E+000
+M1.k = -1.077310000000000e000
 M1.Glass = "MIRROR"
-M1.Diameter = 1.059E+003 * 2.0
+M1.Diameter = 1.059e003 * 2.0
 
 
 # ______________________________________#
 
 M2 = Kos.surf()
-M2.Rc = -3.93E+003
-M2.Thickness = Thickness + 1.037535322418897E+003  # 1.037525880125084E+003+1
-M2.k = -4.328100000000000E+000
+M2.Rc = -3.93e003
+M2.Thickness = Thickness + 1.037535322418897e003  # 1.037525880125084E+003+1
+M2.k = -4.328100000000000e000
 M2.Glass = "MIRROR"
-M2.Diameter = 3.365E+002 * 2.0
+M2.Diameter = 3.365e002 * 2.0
 
 # ______________________________________#
 
-M2.TiltX = -9.657878504276254E-002
-M2.DespY = -2.000000000000000E+000
+M2.TiltX = -9.657878504276254e-002
+M2.DespY = -2.000000000000000e000
 M2.AxisMove = 0
 
 # ______________________________________#
@@ -129,9 +116,9 @@ X, Y, Z, L, M, N = Rayos.pick(-1)
 
 # ______________________________________#
 
-plt.plot(X, Y, 'x')
-plt.xlabel('X')
-plt.ylabel('Y')
-plt.title('Spot diagram')
-plt.axis('square')
+plt.plot(X, Y, "x")
+plt.xlabel("X")
+plt.ylabel("Y")
+plt.title("Spot diagram")
+plt.axis("square")
 plt.show()

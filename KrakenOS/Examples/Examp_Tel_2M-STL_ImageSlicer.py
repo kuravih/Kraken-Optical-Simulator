@@ -1,26 +1,8 @@
-# !/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 Examp-2M-STL_ImageSlicer.py
 """
 
-import pkg_resources
-""" Looking for if KrakenOS is installed, if not, it assumes that
-an folder downloaded from github is run"""
-
-required = {'KrakenOS'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-
-if missing:
-    print("Not installed")
-    import sys
-    sys.path.append("../..")
-
-
 import KrakenOS as Kos
-
-
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy
@@ -32,25 +14,25 @@ if A1 == 0:
     # _________________________________________________________________#
     P_Obj = Kos.surf()
     P_Obj.Rc = 0
-    P_Obj.Thickness = 1000 + 3.452200000000000E+003
+    P_Obj.Thickness = 1000 + 3.452200000000000e003
     P_Obj.Glass = "AIR"
-    P_Obj.Diameter = 1.059E+003 * 2.0
+    P_Obj.Diameter = 1.059e003 * 2.0
     # _________________________________________________________________#
-    Thickness = 3.452200000000000E+003
+    Thickness = 3.452200000000000e003
     M1 = Kos.surf()
-    M1.Rc = -9.638000000004009E+003
+    M1.Rc = -9.638000000004009e003
     M1.Thickness = -Thickness
-    M1.k = -1.077310000000000E+000
+    M1.k = -1.077310000000000e000
     M1.Glass = "MIRROR"
-    M1.Diameter = 1.059E+003 * 2.0
+    M1.Diameter = 1.059e003 * 2.0
     M1.InDiameter = 250 * 2.0
     # _________________________________________________________________#
     M2 = Kos.surf()
-    M2.Rc = -3.93E+003
-    M2.Thickness = Thickness + 1.037525880125084E+003
-    M2.k = -4.328100000000000E+000
+    M2.Rc = -3.93e003
+    M2.Thickness = Thickness + 1.037525880125084e003
+    M2.k = -4.328100000000000e000
     M2.Glass = "MIRROR"
-    M2.Diameter = 3.365E+002 * 2.0
+    M2.Diameter = 3.365e002 * 2.0
     M2.AxisMove = 0
     # _________________________________________________________________#
     P_Image_A = Kos.surf()
@@ -67,7 +49,6 @@ if A1 == 0:
     Telescopio = Kos.system(A, configuracion_1)
     Rayos = Kos.raykeeper(Telescopio)
 
-
     # _________________________________________________________________#
 
     # Gaussian
@@ -80,7 +61,6 @@ if A1 == 0:
         y = scipy.stats.norm(mean, standard_deviation)
         res = y.pdf(x)
         return res
-
 
     Sun = Kos.SourceRnd()
     Sun.field = 4 * 1.2 / (2.0 * 3600.0)
@@ -96,7 +76,6 @@ if A1 == 0:
     Lr = []
     Mr = []
     Nr = []
-
 
     W = 0.6
 
@@ -116,7 +95,6 @@ if A1 == 0:
             Mr.append(m)
             Nr.append(n)
 
-
     Xr = np.asarray(Xr)
     Yr = np.asarray(Yr)
     Zr = np.asarray(Zr)
@@ -131,37 +109,23 @@ if A1 == 0:
     np.save(outfile, Rays)
 
 
-
-
-
-
-
-
-
 ################################################################
 
 else:
 
     P_Obj = Kos.surf()
     P_Obj.Rc = 0
-    P_Obj.Thickness = 100. + 0.5
+    P_Obj.Thickness = 100.0 + 0.5
     P_Obj.Glass = "AIR"
     P_Obj.Diameter = 10
 
-    # currentDirectory = os.getcwd()
-    ruta = os.getcwd()
-
-    import os.path
-
-    ruta = ruta + "/Jherrera-ImageSlicerBW-00.stl"
+    ruta = "KrakenOS/Examples/Jherrera-ImageSlicerBW-00.stl"
     existe = os.path.exists(ruta)
 
     if existe:
         print("El archivo existe.")
     else:
         print("El archivo no existe.")
-
-
 
     direc = ruta
     P_ImageSlicer = Kos.surf()
@@ -175,12 +139,10 @@ else:
     P_ImageSlicer.DespY = -0.12
     P_ImageSlicer.AxisMove = 0
 
-
     PerfLen = Kos.surf()
     PerfLen.Diameter = 30.0
     PerfLen.Thin_Lens = 50
-    PerfLen.Thickness = 100+10-7.19
-
+    PerfLen.Thickness = 100 + 10 - 7.19
 
     P_Ima = Kos.surf()
     P_Ima.Diameter = 10.0
@@ -194,7 +156,7 @@ else:
     ImageSlicer = Kos.system(A, configuracion_1)
     Rayos = Kos.raykeeper(ImageSlicer)
 
-    outfile = "savedRays.npy"
+    outfile = "KrakenOS/Examples/savedRays.npy"
     R = np.load(outfile)
 
     print(np.shape(R))
@@ -214,7 +176,7 @@ else:
 
     for i in range(0, nrays):
         if con2 == 10:
-            print(100. * i / nrays)
+            print(100.0 * i / nrays)
             con2 = 0
 
         pSource_0 = [X[i], Y[i], Z[i] * 0]
@@ -257,15 +219,15 @@ else:
     W = W * np.ones_like(N)
 
     ###################
-    plt.plot(X, Y, '.', c="r", markersize=1)
+    plt.plot(X, Y, ".", c="r", markersize=1)
 
     # axis labeling
-    plt.xlabel('x')
-    plt.ylabel('y')
+    plt.xlabel("x")
+    plt.ylabel("y")
 
     # figure name
-    plt.title('Dot Plot')
-    plt.axis('square')
+    plt.title("Dot Plot")
+    plt.axis("square")
     plt.show()
 
     #             Rays.push()

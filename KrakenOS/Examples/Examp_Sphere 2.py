@@ -1,19 +1,6 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Examp Parabole Mirror Shift"""
+"""Example: Parabole Mirror Shift"""
 
 import numpy as np
-import pkg_resources
-required = {'KrakenOS'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-
-if missing:
-    print("No instalado")
-    import sys
-    sys.path.append("../..")
-
-
 import KrakenOS as Kos
 
 # ______________________________________#
@@ -34,7 +21,6 @@ M1.Diameter = 2000
 M1.CoatingMet = 0
 
 
-
 # ______________________________________#
 
 P_Ima = Kos.surf()
@@ -47,7 +33,7 @@ P_Ima.Name = "Plano imagen"
 
 A = [P_Obj, M1, P_Ima]
 configuracion_1 = Kos.Setup()
-file = "/Users/joelherreravazquez/Library/CloudStorage/OneDrive-UNIVERSIDADNACIONALAUTÓNOMADEMÉXICO/Documentos/GitHub/Kraken-Optical-Simulator/KrakenOS/Cat/Gold.csv"
+file = "KrakenOS/Cat/Gold.csv"
 # file = "/borrar/KrakenOS/Cat/Gold.csv"
 configuracion_1.LoadMetal(file, "Gold", 1)
 
@@ -65,16 +51,14 @@ AperType = "EPD"
 fieldType = "angle"
 
 Pup = Kos.PupilCalc(Espejo, Surf, W, AperType, AperVal)
-Pup.Samp =1
+Pup.Samp = 1
 Pup.Ptype = "fany"
 Pup.FieldY = 0
 x, y, z, L, M, N = Pup.Pattern2Field()
 Rayos = Kos.raykeeper(Espejo)
 
 
-
-
-Kos.TraceLoop(x, y, z, L, M, N, W, Rayos, clean = 1)
+Kos.TraceLoop(x, y, z, L, M, N, W, Rayos, clean=1)
 Kos.display3d(Espejo, Rayos, 0)
 
 
@@ -98,15 +82,7 @@ print(Rayos.RP[0], Rayos.RP[1], Rayos.RP[2])
 # configuracion_1.IT
 
 
-
 # [Dispersion_Formula, MIL, Nd, Vd, *_] = NM[r]
 
 
 # x,y,z,l,m,n = Rayos.pick(-1, coordinates="local")
-
-
-
-
-
-
-

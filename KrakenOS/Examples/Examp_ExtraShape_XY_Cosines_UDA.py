@@ -1,17 +1,4 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Examp Extra Shape XY Cosines"""
-
-import pkg_resources
-required = {'KrakenOS'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-
-if missing:
-    print("No instalado")
-    import sys
-    sys.path.append("../..")
-
+"""Example: Extra Shape XY Cosines"""
 
 import KrakenOS as Kos
 import numpy as np
@@ -34,22 +21,11 @@ L1a.Glass = "BK7"
 L1a.Diameter = 30.0
 
 
-
 radio = 15
 
-px = [radio * np.cos(np.radians(0)),
-     radio * np.cos(np.radians(72)),
-     radio * np.cos(np.radians(144)),
-     radio * np.cos(np.radians(216)),
-     radio * np.cos(np.radians(288)),
-     radio * np.cos(np.radians(0))]
+px = [radio * np.cos(np.radians(0)), radio * np.cos(np.radians(72)), radio * np.cos(np.radians(144)), radio * np.cos(np.radians(216)), radio * np.cos(np.radians(288)), radio * np.cos(np.radians(0))]
 
-py = [radio * np.sin(np.radians(0)),
-     radio * np.sin(np.radians(72)),
-     radio * np.sin(np.radians(144)),
-     radio * np.sin(np.radians(216)),
-     radio * np.sin(np.radians(288)),
-     radio * np.sin(np.radians(0))]
+py = [radio * np.sin(np.radians(0)), radio * np.sin(np.radians(72)), radio * np.sin(np.radians(144)), radio * np.sin(np.radians(216)), radio * np.sin(np.radians(288)), radio * np.sin(np.radians(0))]
 
 
 L1a.UDA = [px, py]
@@ -61,6 +37,7 @@ L1c.Glass = "AIR"
 L1c.Diameter = 30
 L1c.TiltZ = 0
 
+
 def f(x, y, E):
     r = np.sqrt((x * x) + (y * y * 0))
     H = 2.0 * np.pi * r / E[0]
@@ -71,7 +48,7 @@ def f(x, y, E):
     return zx + zy
 
 
-coef = [10.0, 1.]
+coef = [10.0, 1.0]
 L1c.ExtraData = [f, coef]
 
 
@@ -103,7 +80,7 @@ Rays = Kos.raykeeper(Lens)
 
 Wav = 0.45
 for i in range(-100, 100 + 1):
-    pSource = [0.0, i / 10., 0.0]
+    pSource = [0.0, i / 10.0, 0.0]
     dCos = [0.0, 0.0, 1.0]
     Lens.Trace(pSource, dCos, Wav)
     Rays.push()

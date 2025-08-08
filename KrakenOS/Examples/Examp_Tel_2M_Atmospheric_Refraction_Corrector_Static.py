@@ -1,17 +1,4 @@
-# !/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """Examp-Tel_2M_Atmospheric_Refraction_Corrector"""
-
-import pkg_resources
-required = {'KrakenOS'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-
-if missing:
-    print("No instalado")
-    import sys
-    sys.path.append("../..")
-
 
 import KrakenOS as Kos
 import numpy as np
@@ -36,7 +23,7 @@ M1.Diameter = 1059.0 * 2.0
 M1.InDiameter = 250 * 2.0
 # _________________________________________________________________#
 M2 = Kos.surf()
-M2.Rc = -3.93E+003
+M2.Rc = -3.93e003
 M2.Thickness = Thickness + 1037.525 - 300.0
 M2.k = -4.3281
 M2.Glass = "MIRROR"
@@ -147,21 +134,21 @@ for i in range(0, len(xa)):
 Kos.display3d(Telescopio, Rayos, 1)
 
 X, Y, Z, L, M, N = Rayos1.pick(-1)
-plt.plot(X * 1000.0, Y * 1000.0, 'x', c="b", ms=2)
+plt.plot(X * 1000.0, Y * 1000.0, "x", c="b", ms=2)
 
 X, Y, Z, L, M, N = Rayos3.pick(-1)
-plt.plot(X * 1000.0, Y * 1000.0, 'x', c="g", ms=2)
+plt.plot(X * 1000.0, Y * 1000.0, "x", c="g", ms=2)
 
 X, Y, Z, L, M, N = Rayos2.pick(-1)
-plt.plot(X * 1000.0, Y * 1000.0, 'x', c="r", ms=2)
+plt.plot(X * 1000.0, Y * 1000.0, "x", c="r", ms=2)
 
 # axis labeling
-plt.xlabel('x')
-plt.ylabel('y')
+plt.xlabel("x")
+plt.ylabel("y")
 
 # figure name
-plt.title('Spot Diagram')
-plt.axis('square')
+plt.title("Spot Diagram")
+plt.axis("square")
 plt.ylim(-5, 5)
 plt.show()
 

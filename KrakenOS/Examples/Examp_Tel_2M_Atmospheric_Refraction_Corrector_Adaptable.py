@@ -1,17 +1,4 @@
-# !/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """Examp-Tel_2M_Atmospheric_Refraction_Corrector"""
-
-import pkg_resources
-required = {'KrakenOS'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-
-if missing:
-    print("No instalado")
-    import sys
-    sys.path.append("../..")
-
 
 import KrakenOS as Kos
 import numpy as np
@@ -19,24 +6,20 @@ import matplotlib.pyplot as plt
 import scipy
 
 
-
-
-
-def MyPlot(RK,surf, figure= "Spot", mk=["x"], col = [[0.8,0.0,0.0]]):
+def MyPlot(RK, surf, figure="Spot", mk=["x"], col=[[0.8, 0.0, 0.0]]):
     fig = plt.figure(figure)
     ax = fig.add_subplot()
-    i=0
+    i = 0
     for rk in RK:
-        x,y,z,l,m,n = rk.pick(surf[i], coordinates="local")
-        plt.scatter(x, y,marker = mk[i], color = col[i])
+        x, y, z, l, m, n = rk.pick(surf[i], coordinates="local")
+        plt.scatter(x, y, marker=mk[i], color=col[i])
         i = i + 1
     # https://matplotlib.org/3.1.1/api/markers_api.html
-    ax.set_aspect('equal', adjustable='box')
-    ax.set_xlabel('x (mm)')
-    ax.set_ylabel('y (mm)')
-    ax.set_title('Spot diagram')
+    ax.set_aspect("equal", adjustable="box")
+    ax.set_xlabel("x (mm)")
+    ax.set_ylabel("y (mm)")
+    ax.set_title("Spot diagram")
     plt.show()
-
 
 
 def R_RMS_delta(Z1, L, M, N, X0, Y0):
@@ -44,46 +27,49 @@ def R_RMS_delta(Z1, L, M, N, X0, Y0):
     Y1 = ((M / N) * Z1) + Y0
     cenX = np.mean(X1)
     cenY = np.mean(Y1)
-    x1 = (X1 - cenX)
-    y1 = (Y1 - cenY)
-    R2 = ((x1 * x1) + (y1 * y1))
+    x1 = X1 - cenX
+    y1 = Y1 - cenY
+    R2 = (x1 * x1) + (y1 * y1)
     R_RMS = np.sqrt(np.mean(R2))
     return R_RMS
+
 
 def BestFocus(X, Y, Z, L, M, N, system, mod=1):
     delta_Z = 0
     ZZ = (L, M, N, X, Y)
     v = scipy.optimize.fsolve(R_RMS_delta, delta_Z, args=ZZ)
-    if mod ==1:
+    if mod == 1:
         system.SDT[-2].Thickness = system.SDT[-2].Thickness + v[0]
         system.SetData()
         system.SetSolid()
     return system, v[0]
 
 
-def BestRMS(system,raykeeper):
-    x,y,z,l,m,n = raykeeper.pick(-1 , coordinates="local")
-    system, deltaZ = BestFocus(x, y, z, l, m, n, system, mod = 0)
-    rms = R_RMS_delta(deltaZ,l,m,n,x,y)
+def BestRMS(system, raykeeper):
+    x, y, z, l, m, n = raykeeper.pick(-1, coordinates="local")
+    system, deltaZ = BestFocus(x, y, z, l, m, n, system, mod=0)
+    rms = R_RMS_delta(deltaZ, l, m, n, x, y)
     return rms
+
+
 # _________________________________________________________________#
 
 # 4 examples for book pg.121
-T = 0 # Prism rotation
+T = 0  # Prism rotation
 ZenitDist = 55.0
 
-T = -49.5 # Prism rotation
+T = -49.5  # Prism rotation
 ZenitDist = 51.25
 
-T = -67.5 # Prism rotation
+T = -67.5  # Prism rotation
 ZenitDist = 27.5
 
-T = -90 # Prism rotation
+T = -90  # Prism rotation
 ZenitDist = 0
 
 
-A = 1.55/2
-P_Obj = Kos.surf(Thickness = 4452.2, Glass = "AIR", Diameter = 2118.0)
+A = 1.55 / 2
+P_Obj = Kos.surf(Thickness=4452.2, Glass="AIR", Diameter=2118.0)
 P_Obj.Drawing = 0
 
 Thickness = 3452.2
@@ -96,7 +82,7 @@ M1.Diameter = 1059.0 * 2.0
 M1.InDiameter = 250 * 2.0
 
 M2 = Kos.surf()
-M2.Rc = -3.93E+003
+M2.Rc = -3.93e003
 M2.Thickness = Thickness
 M2.k = -4.3281
 M2.Glass = "MIRROR"
@@ -105,9 +91,9 @@ M2.Diameter = 336.5 * 2.0
 M1Vertex = Kos.surf()
 M1Vertex.Thickness = 737.525
 M1Vertex.Diameter = 200
-M1Vertex.TiltZ=T
+M1Vertex.TiltZ = T
 M1Vertex.AxisMove = 1
-M1Vertex.Drawing =0
+M1Vertex.Drawing = 0
 
 
 C1 = Kos.surf()
@@ -147,11 +133,11 @@ C6.Thickness = C1.Thickness + 277.252
 C6.Glass = "AIR"
 C6.Diameter = 100
 
-RZ = Kos.surf(Diameter = 100)
-RZ.TiltZ =  M1Vertex.TiltZ
+RZ = Kos.surf(Diameter=100)
+RZ.TiltZ = M1Vertex.TiltZ
 RZ.AxisMove = 1
 
-P_Ima = Kos.surf(Diameter = 100.0)
+P_Ima = Kos.surf(Diameter=100.0)
 
 A = [P_Obj, M1, M2, M1Vertex, C1, C2, C3, C4, C5, C6, RZ, P_Ima]
 Config_1 = Kos.Setup()
@@ -162,9 +148,6 @@ Tel = Kos.system(A, Config_1)
 Rays1 = Kos.raykeeper(Tel)
 Rays2 = Kos.raykeeper(Tel)
 Rays3 = Kos.raykeeper(Tel)
-
-
-
 
 
 W = 0.60169
@@ -190,15 +173,15 @@ Pup.FieldX = 0.0
 
 
 W = [0.50169, 0.60169, 0.70169]
-RAYS=[Rays1, Rays2, Rays3]
+RAYS = [Rays1, Rays2, Rays3]
 i = 0
 for w in W:
     Pup.l2 = w
     x, y, z, L, M, N = Pup.Pattern2Field()
-    Kos.TraceLoop(x, y, z, L, M, N, w, RAYS[i], clean = 1)
+    Kos.TraceLoop(x, y, z, L, M, N, w, RAYS[i], clean=1)
     i = i + 1
 
 MK = [".", ".", "."]
-COL = [[0.8,0.0,0.0], [0.0,0.8,0.0], [0.0,0.0,0.8]]
+COL = [[0.8, 0.0, 0.0], [0.0, 0.8, 0.0], [0.0, 0.0, 0.8]]
 SURF = [-1, -1, -1]
-MyPlot(RAYS, SURF, figure= "Spot", mk = MK, col = COL)
+MyPlot(RAYS, SURF, figure="Spot", mk=MK, col=COL)

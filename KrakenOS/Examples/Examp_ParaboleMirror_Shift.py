@@ -1,22 +1,7 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Examp Parabole Mirror Shift"""
+"""Example: Parabole Mirror Shift"""
 
 import numpy as np
-import pkg_resources
 import pickle
-
-
-required = {'KrakenOS'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-
-if missing:
-    print("No instalado")
-    import sys
-    sys.path.append("../..")
-
-
 import KrakenOS as Kos
 
 # ______________________________________#
@@ -60,16 +45,12 @@ Espejo = Kos.system(A, configuracion_1)
 # Espejo = Kos.system_Lite(A, configuracion_1)
 
 
-
-
-
 # with open('mi_objeto.pkl', 'wb') as archivo_salida:
 #     # Usa pickle.dump para serializar y guardar el objeto en el archivo.
 #     pickle.dump(Espejo, archivo_salida)
 
 # with open('mi_objeto.pkl', 'rb') as archivo_entrada:
 #     Espejo = pickle.load(archivo_entrada)
-
 
 
 Rayos = Kos.raykeeper(Espejo)
@@ -97,19 +78,19 @@ for i in range(-tam, tam + 1):
 Kos.display2d(Espejo, Rayos, 0)
 
 
-
 def R_RMS_delta(Z1, L, M, N, X0, Y0):
     X1 = ((L / N) * Z1) + X0
     Y1 = ((M / N) * Z1) + Y0
     cenX = np.mean(X1)
     cenY = np.mean(Y1)
-    x1 = (X1 - cenX)
-    y1 = (Y1 - cenY)
-    R2 = ((x1 * x1) + (y1 * y1))
+    x1 = X1 - cenX
+    y1 = Y1 - cenY
+    R2 = (x1 * x1) + (y1 * y1)
     R_RMS = np.sqrt(np.mean(R2))
     return R_RMS
 
-x,y,z,l,m,n = Rayos.pick(-1, coordinates="local")
+
+x, y, z, l, m, n = Rayos.pick(-1, coordinates="local")
 
 print(R_RMS_delta(z, l, m, n, x, y))
 X, Y, Z, L, M, N = Rayos.pick(-1)
@@ -118,9 +99,10 @@ X, Y, Z, L, M, N = Rayos.pick(-1)
 
 
 import matplotlib.pyplot as plt
-plt.plot(X, Y, 'x')
-plt.xlabel('x')
-plt.ylabel('y')
-plt.title('Spot Diagram')
-plt.axis('square')
+
+plt.plot(X, Y, "x")
+plt.xlabel("x")
+plt.ylabel("y")
+plt.title("Spot Diagram")
+plt.axis("square")
 plt.show()

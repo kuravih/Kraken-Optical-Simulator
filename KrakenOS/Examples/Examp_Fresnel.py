@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 Simulation of a Fresnel lens using KrakenOS
 
@@ -8,24 +6,7 @@ builds an optical system in KrakenOS, and traces rays through the system to
 visualize the lens behavior.
 """
 
-import pkg_resources
-import sys
 import numpy as np
-import matplotlib.pyplot as plt
-from scipy.interpolate import interp1d
-
-# -----------------------------------------------------------------------------
-# Check that KrakenOS is available
-# -----------------------------------------------------------------------------
-
-required = {'KrakenOS'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-
-if missing:
-    print("KrakenOS is not installed. Adding relative path for local environment.")
-    sys.path.append("../..")
-
 import KrakenOS as Kos
 
 # -----------------------------------------------------------------------------
@@ -42,10 +23,11 @@ P_Obj.Diameter = 50.0  # Effective diameter
 # Class to process the Fresnel lens profile
 # -----------------------------------------------------------------------------
 
+
 class FresnelPrepare:
-    def __init__(self, file):
+    def __init__(self, filename):
         """Initialize profile from a CSV file with x, y columns."""
-        data = np.loadtxt(file, delimiter=',')
+        data = np.loadtxt(filename, delimiter=",")
         x = data[:, 0]
         y = data[:, 1]
 
@@ -98,19 +80,20 @@ class FresnelPrepare:
 
     def calculate(self, x, y, E):
         """Compute surface height z at coordinates x, y."""
-        r = np.sqrt(x*x + y*y)
+        r = np.sqrt(x * x + y * y)
         ARG_C = self.find_closest_indices(r, self.X1)
         Mp = self.M[ARG_C]
         bp = self.b[ARG_C]
         z = Mp * r + bp
         return z
 
+
 # -----------------------------------------------------------------------------
 # Define the Fresnel lens from the profile file
 # -----------------------------------------------------------------------------
 
 file = "R1064_F1800.txt"  # Lens profile file
-fresnel = FresnelPrepare(file)
+fresnel = FresnelPrepare("KrakenOS/Examples/"+file)
 E = []  # Placeholder for additional data if needed
 
 # Structured surface (zones)
@@ -121,7 +104,7 @@ L1a.Glass = "PMMA"
 L1a.Diameter = 2128.0
 L1a.ExtraData = [fresnel.calculate, E]  # Defined with external function
 L1a.Res = 1
-L1a.Name = 'zone side'
+L1a.Name = "zone side"
 L1a.Nm_Pos = (-500, 200)
 # DerPres controls the numerical precision of derivative calculations.
 # It should only be modified in cases where the surface includes extremely fine structures
@@ -133,7 +116,7 @@ L1b = Kos.surf()
 L1b.Thickness = 1795.0
 L1b.Glass = "AIR"
 L1b.Diameter = 2128.0
-L1b.Name = 'flat side'
+L1b.Name = "flat side"
 L1b.Nm_Pos = (500, 200)
 
 # Image surface
@@ -164,7 +147,7 @@ Wav = 0.55  # Wavelength (microns)
 
 for i in I:
     pSource = [0.0, i, 0.0]  # Ray origin
-    dCos = [0.0, 0.0, 1.0]   # Direction (Z axis)
+    dCos = [0.0, 0.0, 1.0]  # Direction (Z axis)
     Lens.Trace(pSource, dCos, Wav)
     Rays.push()
 

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 Example: Doublet Lens with Pupil Calculation
 
@@ -19,21 +17,6 @@ Author: Joel Herrera V.
 Date: 10/03/2025
 """
 
-import pkg_resources
-
-# =============================================================================
-# Check if KrakenOS is installed.
-# If not, assume that the code is run from a downloaded GitHub folder and add the relative path.
-# =============================================================================
-required = {'KrakenOS'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-
-if missing:
-    print("KrakenOS is not installed. Using local GitHub folder.")
-    import sys
-    sys.path.append("../..")  # Adjust this path if necessary
-
 import KrakenOS as Kos  # Import KrakenOS for optical simulation
 
 # =============================================================================
@@ -51,43 +34,43 @@ import KrakenOS as Kos  # Import KrakenOS for optical simulation
 # Object Plane (Source)
 P_Obj = Kos.surf()
 P_Obj.Rc = 0.0
-P_Obj.Thickness = 100          # Distance to the next surface (mm)
+P_Obj.Thickness = 100  # Distance to the next surface (mm)
 P_Obj.Glass = "AIR"
 P_Obj.Diameter = 30.0
 P_Obj.Name = "P_Obj"
 
 # First Lens Surface (convex, BK7)
 L1a = Kos.surf()
-L1a.Rc = 9.284706570002484E+001  # Convex curvature
-L1a.Thickness = 6.0              # Lens thickness (mm)
+L1a.Rc = 9.284706570002484e001  # Convex curvature
+L1a.Thickness = 6.0  # Lens thickness (mm)
 L1a.Glass = "BK7"
 L1a.Diameter = 30.0
-L1a.Axicon = 0                  # No axicon effect
+L1a.Axicon = 0  # No axicon effect
 
 # Second Lens Surface (concave, F2)
 L1b = Kos.surf()
-L1b.Rc = -3.071608670000159E+001  # Concave curvature
-L1b.Thickness = 3.0              # Separation between surfaces (mm)
+L1b.Rc = -3.071608670000159e001  # Concave curvature
+L1b.Thickness = 3.0  # Separation between surfaces (mm)
 L1b.Glass = "F2"
 L1b.Diameter = 30
 
 # Air Gap before pupil and image plane
 L1c = Kos.surf()
 # The thickness is set to (9.737604742910693E+001 - 40) mm to account for design constraints.
-L1c.Rc = -7.819730726078505E+001
-L1c.Thickness = 9.737604742910693E+001 - 40
+L1c.Rc = -7.819730726078505e001
+L1c.Thickness = 9.737604742910693e001 - 40
 L1c.Glass = "AIR"
 L1c.Diameter = 30
 
 # Pupil Surface
 pupil = Kos.surf()
 pupil.Rc = 0
-pupil.Thickness = 40.0         # Thickness of the pupil element (mm)
+pupil.Thickness = 40.0  # Thickness of the pupil element (mm)
 pupil.Glass = "AIR"
 pupil.Diameter = 3
 pupil.Name = "Pupil"
-pupil.DespY = 0.0              # Y displacement (if any)
-pupil.Nm_Poss = [-10, 10]       # Nominal pupil positions (range)
+pupil.DespY = 0.0  # Y displacement (if any)
+pupil.Nm_Pos = [-10, 10]  # Nominal pupil positions (range)
 
 # Image Plane (Detector)
 P_Ima = Kos.surf()
@@ -96,7 +79,7 @@ P_Ima.Thickness = 0.0
 P_Ima.Glass = "AIR"
 P_Ima.Diameter = 20.0
 P_Ima.Name = "P_Ima"
-P_Ima.Nm_Poss = [-10, 10]       # Nominal positions on the image plane
+P_Ima.Nm_Pos = [-10, 10]  # Nominal positions on the image plane
 
 # =============================================================================
 # Assemble the optical surfaces into a system.
@@ -119,9 +102,9 @@ RayKeeper = Kos.raykeeper(Doublet)  # Container to store traced rays
 #  - AperType: Type of aperture ("STOP")
 #  - AperVal: Aperture value (3)
 # =============================================================================
-W = 0.4        # Wavelength
-sup = 4        # Surface index for pupil (0-based indexing: pupil is the 5th surface)
-AperVal = 3    # Aperture value
+W = 0.4  # Wavelength
+sup = 4  # Surface index for pupil (0-based indexing: pupil is the 5th surface)
+AperVal = 3  # Aperture value
 AperType = "STOP"  # Aperture type
 
 Pup = Kos.PupilCalc(Doublet, sup, W, AperType, AperVal)
@@ -154,16 +137,16 @@ print("Pupil output direction cosines:", L, M, N)
 # =============================================================================
 
 # First field pattern: FieldY = 2.0
-Pup.Samp = 7           # Number of samples
-Pup.Ptype = "fany"      # Pattern type (e.g., fan-like distribution)
-Pup.FieldType = "angle" # Field defined in terms of angle
-Pup.FieldY = 2.0       # Field parameter (positive Y direction)
+Pup.Samp = 7  # Number of samples
+Pup.Ptype = "fany"  # Pattern type (e.g., fan-like distribution)
+Pup.FieldType = "angle"  # Field defined in terms of angle
+Pup.FieldY = 2.0  # Field parameter (positive Y direction)
 x, y, z, L, M, N = Pup.Pattern2Field()  # Generate field pattern
 
 # Trace rays for the first pattern
 for i in range(len(x)):
-    pSource_0 = [x[i], y[i], z[i]]   # Ray origin
-    dCos = [L[i], M[i], N[i]]         # Ray direction cosines
+    pSource_0 = [x[i], y[i], z[i]]  # Ray origin
+    dCos = [L[i], M[i], N[i]]  # Ray direction cosines
     Doublet.Trace(pSource_0, dCos, W)
     RayKeeper.push()
 

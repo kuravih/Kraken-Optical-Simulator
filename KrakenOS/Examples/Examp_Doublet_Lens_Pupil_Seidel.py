@@ -1,23 +1,6 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Examp Doublet Lens Pupil Seidel"""
-
-import pkg_resources
-""" Looking for if KrakenOS is installed, if not, it assumes that
-an folder downloaded from github is run"""
-
-required = {'KrakenOS'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-
-if missing:
-    print("Not installed")
-    import sys
-    sys.path.append("../..")
-
+"""Example: Doublet Lens Pupil Seidel"""
 
 import KrakenOS as Kos
-import numpy as np
 
 # _________________________________________#
 
@@ -31,7 +14,7 @@ P_Obj.Name = "P Obj"
 # _________________________________________#
 
 L1a = Kos.surf()
-L1a.Rc = 9.284706570002484E+001
+L1a.Rc = 9.284706570002484e001
 L1a.Thickness = 6.0
 L1a.Glass = "N-BK7"
 L1a.Diameter = 30.0
@@ -40,7 +23,7 @@ L1a.Axicon = 0
 # _________________________________________#
 
 L1b = Kos.surf()
-L1b.Rc = -3.071608670000159E+001
+L1b.Rc = -3.071608670000159e001
 L1b.Thickness = 3.0
 L1b.Glass = "F2"
 L1b.Diameter = 30
@@ -48,8 +31,8 @@ L1b.Diameter = 30
 # _________________________________________#
 
 L1c = Kos.surf()
-L1c.Rc = -7.819730726078505E+001
-L1c.Thickness = 9.737604742910693E+001 - 40
+L1c.Rc = -7.819730726078505e001
+L1c.Thickness = 9.737604742910693e001 - 40
 L1c.Glass = "AIR"
 L1c.Diameter = 30
 
@@ -57,7 +40,7 @@ L1c.Diameter = 30
 
 pupila = Kos.surf()
 pupila.Rc = 0
-pupila.Thickness = 40.
+pupila.Thickness = 40.0
 pupila.Glass = "AIR"
 pupila.Diameter = 15.0
 pupila.Name = "Ap Stop"
@@ -77,7 +60,7 @@ config_1 = Kos.Setup()
 
 # _________________________________________#
 
-Doblete = Kos.system(A, config_1)
+Doublet = Kos.system(A, config_1)
 
 # _________________________________________#
 
@@ -87,7 +70,7 @@ AperVal = 3
 AperType = "EPD"
 fieldType = "angle"
 
-Pup = Kos.PupilCalc(Doblete, Surf, W, AperType, AperVal)
+Pup = Kos.PupilCalc(Doublet, Surf, W, AperType, AperVal)
 Pup.Samp = 25
 Pup.Ptype = "fan"
 Pup.FieldY = 3.25
@@ -134,7 +117,6 @@ print(AB.CL)
 print(AB.CT)
 
 
-
 # print( AB[0][0])
 # print(np.sum(AB[1][0]), np.sum(AB[1][1]), np.sum(AB[1][2]), np.sum(AB[1][3]), np.sum(AB[1][4]))
 
@@ -154,16 +136,16 @@ print(AB.CT)
 
 
 x, y, z, L, M, N = Pup.Pattern2Field()
-Rayos = Kos.raykeeper(Doblete)
+Rayos = Kos.raykeeper(Doublet)
 
 # _________________________________________#
 
 for i in range(0, len(x)):
     pSource_0 = [x[i], y[i], z[i]]
     dCos = [L[i], M[i], N[i]]
-    Doblete.Trace(pSource_0, dCos, W)
+    Doublet.Trace(pSource_0, dCos, W)
     Rayos.push()
 
 # _________________________________________#
 
-Kos.display2d(Doblete, Rayos, 0)
+Kos.display2d(Doublet, Rayos, 0)

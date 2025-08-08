@@ -1,21 +1,8 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Examp Perfect Lens"""
+"""Example Perfect Lens"""
 
 import time
 import matplotlib.pyplot as plt
 import numpy as np
-import pkg_resources
-required = {'KrakenOS'}
-installed = {pkg.key for pkg in pkg_resources.working_set}
-missing = required - installed
-
-if missing:
-    print("No instalado")
-    import sys
-    sys.path.append("../..")
-
-
 import KrakenOS as Kos
 
 # ______________________________________#
@@ -42,8 +29,8 @@ L1a.Diameter = 30.0
 # ______________________________________#
 
 L1b = Kos.surf()
-L1b.Thin_Lens = 50.
-L1b.Thickness = 100.
+L1b.Thin_Lens = 50.0
+L1b.Thickness = 100.0
 L1b.Rc = 0.0
 L1b.Glass = "AIR"
 L1b.Diameter = 30.0
@@ -64,11 +51,11 @@ config_1 = Kos.Setup()
 
 # ______________________________________#
 
-Doblete = Kos.system(A, config_1)
-Rayos1 = Kos.raykeeper(Doblete)
-Rayos2 = Kos.raykeeper(Doblete)
-Rayos3 = Kos.raykeeper(Doblete)
-RayosT = Kos.raykeeper(Doblete)
+Doublet = Kos.system(A, config_1)
+Rayos1 = Kos.raykeeper(Doublet)
+Rayos2 = Kos.raykeeper(Doublet)
+Rayos3 = Kos.raykeeper(Doublet)
+RayosT = Kos.raykeeper(Doublet)
 
 # ______________________________________#
 
@@ -85,22 +72,22 @@ for j in range(-tam, tam + 1):
             pSource_0 = [x_0, y_0, 0.0]
             dCos = [0.0, np.sin(np.deg2rad(tet)), np.cos(np.deg2rad(tet))]
             W = 0.4
-            Doblete.Trace(pSource_0, dCos, W)
+            Doublet.Trace(pSource_0, dCos, W)
             Rayos1.push()
             RayosT.push()
 
 # ______________________________________#
 
-Kos.display3d(Doblete, RayosT, 0)
+Kos.display3d(Doublet, RayosT, 0)
 X, Y, Z, L, M, N = Rayos1.pick(-1)
 
 # ______________________________________#
 
-plt.plot(X, Y, 'x')
-plt.xlabel('X')
-plt.ylabel('Y')
-plt.title('Stop Diagram')
-plt.axis('square')
+plt.plot(X, Y, "x")
+plt.xlabel("X")
+plt.ylabel("Y")
+plt.title("Stop Diagram")
+plt.axis("square")
 plt.show()
 
 # ______________________________________#
