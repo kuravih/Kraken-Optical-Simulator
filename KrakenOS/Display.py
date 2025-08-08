@@ -2,7 +2,6 @@
 import numpy as np
 import pyvista as pv
 import matplotlib.pyplot as plt
-plt.rcParams["font.family"] = "Times New Roman"
 import sys
 from matplotlib import rc
 from typing import Tuple
