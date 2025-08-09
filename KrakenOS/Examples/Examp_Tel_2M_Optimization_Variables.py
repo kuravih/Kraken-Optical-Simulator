@@ -2,7 +2,6 @@
 
 import os
 import sys
-import matplotlib.pyplot as plt
 import numpy as np
 import KrakenOS as Kos
 
@@ -94,22 +93,6 @@ class FunHandl:
         self.Vars = np.zeros_like(self.SurfNum)
         self.n = len(self.Vars)
         self.fun = fun
-
-    def FunVar(system):
-        L0 = dir(system.SDT[0])
-
-        VarList = []
-        SurfNum = []
-        num = system.n
-
-        for Atributo in L0:
-            for i in range(0, num):
-                s = system.SDT[i].Var
-                for ss in s:
-                    if ss == Atributo:
-                        VarList.append(Atributo)
-                        SurfNum.append(i)
-        return (VarList, SurfNum)
 
     def GetAtri(self, index, attr_name):
         return getattr(self.obj.SDT[index], attr_name)

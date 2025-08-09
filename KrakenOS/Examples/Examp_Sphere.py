@@ -1,6 +1,5 @@
 """Example: Parabole Mirror Shift"""
 
-import numpy as np
 import KrakenOS as Kos
 import os
 

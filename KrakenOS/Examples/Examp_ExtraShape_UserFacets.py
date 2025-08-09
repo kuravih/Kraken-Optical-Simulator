@@ -12,9 +12,7 @@ Author: Joel H. V.
 Date:12/04/25
 """
 
-import sys
 import numpy as np
-import matplotlib.pyplot as plt
 import KrakenOS as Kos
 
 # --- Define the entrance pupil surface ---
@@ -42,7 +40,7 @@ L1a.UDA = [px, py]
 # Function to generate facet centers and normals for a faceted surface
 
 
-def generate_facets(n, m, deviation=0.1):
+def generate_facets(_n, _m, deviation=0.1):
     """
     Generates centers and normal vectors for a square grid of n x n planar facets.
 
@@ -55,19 +53,19 @@ def generate_facets(n, m, deviation=0.1):
     - X0, Y0: Arrays (n x n) of facet center coordinates in x and y
     - NX, NY, NZ: Arrays (n x n) of the unit normal vector components
     """
-    step = m / n
-    x = np.linspace(-m / 2 + step / 2, m / 2 - step / 2, n)
-    y = np.linspace(-m / 2 + step / 2, m / 2 - step / 2, n)
-    X0, Y0 = np.meshgrid(x, y)
+    step = _m / _n
+    x = np.linspace(-_m / 2 + step / 2, _m / 2 - step / 2, _n)
+    y = np.linspace(-_m / 2 + step / 2, _m / 2 - step / 2, _n)
+    x0, y0 = np.meshgrid(x, y)
 
-    ang_x = np.random.uniform(-deviation, deviation, size=(n, n))
-    ang_y = np.random.uniform(-deviation, deviation, size=(n, n))
+    ang_x = np.random.uniform(-deviation, deviation, size=(_n, _n))
+    ang_y = np.random.uniform(-deviation, deviation, size=(_n, _n))
 
-    NX = np.sin(ang_x)  # x-component of normal
-    NY = np.sin(ang_y)  # y-component of normal
-    NZ = np.sqrt(1.0 - NX**2 - NY**2)  # z-component of unit normal
+    nx = np.sin(ang_x)  # x-component of normal
+    ny = np.sin(ang_y)  # y-component of normal
+    nz = np.sqrt(1.0 - nx**2 - ny**2)  # z-component of unit normal
 
-    return X0, Y0, NX, NY, NZ
+    return x0, y0, nx, ny, nz
 
 
 # -----------------------------------------------------------------------------
@@ -75,7 +73,7 @@ def generate_facets(n, m, deviation=0.1):
 
 
 class FacetedSurface:
-    def __init__(self, X0, Y0, NX, NY, NZ, m):
+    def __init__(self, _x0, _y0, _nx, _ny, _nz, _m):
         """
         Initialize the surface object.
 
@@ -84,13 +82,13 @@ class FacetedSurface:
         - NX, NY, NZ: Grids of facet normal components
         - m: Total width of the surface in mm
         """
-        self.X0 = X0
-        self.Y0 = Y0
-        self.NX = NX
-        self.NY = NY
-        self.NZ = NZ
-        self.m = m
-        self.n = X0.shape[0]
+        self.x0 = _x0
+        self.y0 = _y0
+        self.nx = _nx
+        self.ny = _ny
+        self.nz = _nz
+        self.m = _m
+        self.n = _x0.shape[0]
 
     def __call__(self, x, y, E=None):
         """
@@ -111,11 +109,11 @@ class FacetedSurface:
         j = np.clip(np.floor((x + self.m / 2) / step).astype(int), 0, self.n - 1)
         i = np.clip(np.floor((y + self.m / 2) / step).astype(int), 0, self.n - 1)
 
-        x0 = self.X0[i, j]
-        y0 = self.Y0[i, j]
-        nx = self.NX[i, j]
-        ny = self.NY[i, j]
-        nz = self.NZ[i, j]
+        x0 = self.x0[i, j]
+        y0 = self.y0[i, j]
+        nx = self.nx[i, j]
+        ny = self.ny[i, j]
+        nz = self.nz[i, j]
 
         numerator = nx * (x - x0) + ny * (y - y0)
         z = -numerator / nz
@@ -162,9 +160,9 @@ Wav = 0.45  # Wavelength in microns
 
 # Rays from center of each facet (correctly using i, j order)
 
-for i in range(n):
-    for j in range(n):
-        pSource = [X0[i, j], Y0[i, j], 0.0]
+for _i in range(n):
+    for _j in range(n):
+        pSource = [X0[_i, _j], Y0[_i, _j], 0.0]
         dCos = [0.0, 0.0, 1.0]
         Lens.Trace(pSource, dCos, Wav)
         Rays.push()

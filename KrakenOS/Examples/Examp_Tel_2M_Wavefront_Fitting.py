@@ -2,7 +2,6 @@
 
 import os
 import sys
-import matplotlib.pyplot as plt
 import numpy as np
 import KrakenOS as Kos
 
@@ -57,23 +56,21 @@ P_Ima.Name = "Plano imagen"
 
 # ______________________________________#
 
-A = [P_Obj, M1, M2, P_Ima]
+elements = [P_Obj, M1, M2, P_Ima]
 configuracion_1 = Kos.Setup()
-Telescopio = Kos.system(A, configuracion_1)
+Telescopio = Kos.system(elements, configuracion_1)
 
 # ______________________________________#
-"""Vamos a definir los parámetros de la pupila del sistema,
-definiremos esta pupila en la superficie 1, esta corresponde al
-espejo primario"""
+# Vamos a definir los parámetros de la pupila del sistema, definiremos esta pupila en la superficie 1, esta corresponde al espejo primario
 Surf = 1
 
-"""Definimos la longitud de onda en micras"""
+# Definimos la longitud de onda en micras
 W = 0.50169
 
-"""Indicamos que la apertura del sistema definirá la pupila"""
+# Indicamos que la apertura del sistema definirá la pupila
 AperType = "EPD"
 
-""" Definimos el Diametro de la apertura del sistema"""
+# Definimos el Diametro de la apertura del sistema
 AperVal = 2000.0
 Pupil = Kos.PupilCalc(Telescopio, Surf, W, AperType, AperVal)
 
@@ -99,45 +96,35 @@ print("Distancia focal")
 print(Pupil.EFFL)
 
 
-""" Para los calculos internos de la fase del frente de onda indicamos que
-la pupila tendrá un arreglo exapolar con 10 anillos"""
-
+# Para los calculos internos de la fase del frente de onda indicamos que la pupila tendrá un arreglo exapolar con 10 anillos
 Pupil.Samp = 11
 Pupil.Ptype = "hexapolar"
-"""Indicamos que los campos son tel tipo angulo, como en el caso de los telescopios
-con luz desde el infinito, para diseños con objeto certano este parametro es la altura
- del objeto"""
+# Indicamos que los campos son tel tipo angulo, como en el caso de los telescopio con luz desde el infinito, para diseños con objeto certano este parametro es la altura del objeto
 
 Pupil.FieldType = "angle"
-""" Definimos que el campo es 0 en x y cero en y, es decir, está en el eje óptico"""
+# Definimos que el campo es 0 en x y cero en y, es decir, está en el eje óptico
 
 
 Pupil.FieldX = 0.0
 Pupil.FieldY = 0.0
 
 
-""" Ahora calculamos la fase del frente de onda en la pupila, las coordenadas X, Y
-son las coordendas en la pupila, el valor de Z es la fase en cada punto X, Y y P2V
-es el valor pico a valle."""
+# Ahora calculamos la fase del frente de onda en la pupila, las coordenadas X, Y son las coordendas en la pupila, el valor de Z es la fase en cada punto X, Y y P2V es el valor pico a valle.
 
 X, Y, Z, P2V = Kos.Phase2(Pupil)
 print("Peak to valley: ", P2V)
 
 
-"""Indicamos el grado de expanción para los polinomios de Zernike"""
+# Indicamos el grado de expanción para los polinomios de Zernike
 NC = 15
 
-"""Generamos un arreglo numpy conlas mismas dimensiones de la expanción definida"""
+# Generamos un arreglo numpy conlas mismas dimensiones de la expanción definida
 A = np.ones(NC)
 
-"""Calculamos los polinomios de Zernike con la fase calculada y el numero de
- elementos deseados en la expanción, Zcoef son los coeficientes en longitudes de
- onda, Mat es la expreción matematica de Zeidel para dicho coeficiente,
- esto con fines ilustrativos, w_rms es el error del ajuste"""
-
+# Calculamos los polinomios de Zernike con la fase calculada y el numero de elementos deseados en la expanción, Zcoef son los coeficientes en longitudes de onda, Mat es la expreción matematica de Zeidel para dicho coeficiente, esto con fines ilustrativos, w_rms es el error del ajuste
 Zcoef, Mat, RMS2Chief, RMS2Centroid, FITTINGERROR = Kos.Zernike_Fitting(X, Y, Z, A)
 
-""""Se despliegan los resultados"""
+# Se despliegan los resultados
 for i in range(0, NC):
     print("z", i + 1, "  ", "{0:.8f}".format(float(Zcoef[i])), ":", Mat[i])
 
